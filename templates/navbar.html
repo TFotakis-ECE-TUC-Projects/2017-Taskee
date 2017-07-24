@@ -30,7 +30,7 @@
                 {#                    </a>#}
                 {#                </li>#}
                 <li class="{% block logoutActive %}{% endblock %}">
-                    <a href="#">
+                    <a href="{% url 'login:logout' %}">
                         <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>&nbsp;Logout
                     </a>
                 </li>

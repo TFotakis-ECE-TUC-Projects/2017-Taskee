@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect
 from django.views.generic import View
@@ -53,3 +53,8 @@ class RegisterFormView(View):
                     login(request, user)
                     return redirect('taskmanager:index')
         return render(request, self.template_name, {'form': form})
+
+
+def logoutView(request):
+    logout(request)
+    return redirect('login:login')
