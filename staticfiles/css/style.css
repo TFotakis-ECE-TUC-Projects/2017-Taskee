@@ -1,0 +1,21 @@
+body{
+    background-color: white;
+}
+.navbar{
+    border-radius: 0;
+}
+/*.form-control{*/
+    /*border-radius: 0;*/
+    /*background-color: transparent;*/
+    /*!*border-width: 0;*!*/
+    /*color: white;*/
+    /*border-top-width: 0;*/
+    /*border-left-width: 0;*/
+    /*border-right-width: 0;*/
+/*}*/
+/*.btn{*/
+    /*border-radius: 0;*/
+    /*background-color: transparent;*/
+    /*color: white;*/
+    /*border: 0;*/
+/*}*/
