@@ -54,8 +54,7 @@ ROOT_URLCONF = 'Taskee.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'Taskee/../templates'),
-                 os.path.join(BASE_DIR, 'Taskee/../login/')]
+        'DIRS': [os.path.join(BASE_DIR, 'Taskee/../templates')]
         ,
         'APP_DIRS': True,
         'OPTIONS': {
