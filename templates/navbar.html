@@ -1,14 +1,16 @@
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
-{#        Logo#}
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#topNavBar">
-            <span class="glyphicon glyphicon-menu-hamburger" style="color: white"></span>
-        </button>
+        {#        Logo#}
+        {% if user.is_authenticated %}
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#topNavBar">
+                <span class="glyphicon glyphicon-menu-hamburger" style="color: white"></span>
+            </button>
+        {% endif %}
         <div class="navbar-header">
             <a class="navbar-brand" href="">Taskee</a>
         </div>
 
-{#        Items#}
+        {#        Items#}
         <div class="collapse navbar-collapse" id="topNavBar">
             {#            <ul class="nav navbar-nav">#}
             {#                <li class="{% block albumsActive %}{% endblock %}">#}
@@ -29,11 +31,13 @@
                 {#                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;Add Album#}
                 {#                    </a>#}
                 {#                </li>#}
-                <li class="{% block logoutActive %}{% endblock %}">
-                    <a href="{% url 'login:logout' %}">
-                        <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>&nbsp;Logout
-                    </a>
-                </li>
+                {% if user.is_authenticated %}
+                    <li class="{% block logoutActive %}{% endblock %}">
+                        <a href="{% url 'login:logout' %}">
+                            <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>&nbsp;Logout
+                        </a>
+                    </li>
+                {% endif %}
             </ul>
 
             {#            <form class="navbar-form" role="search" method="get" action="#">#}
