@@ -1,8 +1,11 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views import generic
-from .models import Task
 from django.http import HttpResponse
-                                   #generic.TemplateView
+from django.views import generic
+
+from .models import Task
+
+
+# generic.TemplateView
 class IndexView(LoginRequiredMixin, generic.ListView):
     template_name = 'taskmanager/taskView.html'
     context_object_name = 'task_list'
@@ -11,5 +14,6 @@ class IndexView(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         return Task.objects.all()
 
+
 def taskdetail(request, pk):
-    return HttpResponse("<h2>Details: "+str(pk))+"</h2>"
+    return HttpResponse("<h2>Details: " + str(pk) + "</h2>")
