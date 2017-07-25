@@ -16,7 +16,7 @@ class Task(models.Model):
     notes = models.CharField(max_length=1000)
 
     def __str__(self):
-        return self.name
+        return self.name + ' - ' + self.place + str(self.id)
 
 
 class WeeklySchedule(models.Model):

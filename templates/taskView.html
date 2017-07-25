@@ -1,0 +1,16 @@
+
+{%  extends 'base.html' %}
+
+{% block body %}
+
+        <ul>
+            {% for task in task_list %}
+            <li><a href="{%  url 'taskView'  %}">{{ task.name }}</a></li>
+            {% endfor %}
+
+        </ul>
+{#     {% else %}#}
+{#        <h3>You don't have any albums</h3>#}
+{#     {% endif %}#}
+
+{% endblock %}

@@ -17,9 +17,12 @@ from django.conf.urls import url
 from django.contrib import admin
 
 from login import views
+from taskmanager import views as otherviews
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.LoginView, name='login'),
     url(r'^register.html$', views.RegisterView, name='register'),
+    url(r'task/', otherviews.TaskView.as_view(), name='taskView'),
+    url(r'^task/(?P<pk>[0-9]+)/$', otherviews.taskdetail, name='taskDetail'),
 ]
