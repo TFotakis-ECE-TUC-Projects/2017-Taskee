@@ -1,5 +1,7 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponse
+# from django.http import HttpResponse
+from django.shortcuts import render
 from django.views import generic
 
 from .models import Task
@@ -15,5 +17,8 @@ class IndexView(LoginRequiredMixin, generic.ListView):
         return Task.objects.all()
 
 
-def taskdetail(request, pk):
-    return HttpResponse("<h2>Details: " + str(pk) + "</h2>")
+@login_required(login_url='/login/')
+def taskdetail(request, primaryKey):
+    task = Task.objects.filter(id=primaryKey)
+    # return HttpResponse("<h2>Details: " + str(pk) + "</h2>")
+    return render(request, 'taskmanager/taskDetail.html', {'task': task})

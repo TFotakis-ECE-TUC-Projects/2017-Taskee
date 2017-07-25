@@ -1,24 +1,7 @@
-{%  extends 'base.html' %}
-
-{% block title %}Album Details{% endblock %}
+{% extends 'base.html' %}
+{% block title %}Task Details{% endblock %}
 {% block body %}
-
-{##}
-{#    <ul>#}
-{#        <li>#}
-{#            {{ task.name }}#}
-{#            {{ album.artist }}#}
-{#        </li>#}
-{#    </ul>#}
-{#    </ul>#}
-    <h1>{{ task.name }}</h1>
-    <h2>{{ album.artist }}</h2>
-
-{##}
-{#    <ul>#}
-{#        {% for song in album.song_set.all %}#}
-{#               <li><a href="{%  url 'music:detail' album.id %}">{{ song.song_title }}</a></li>#}
-{#        {% endfor %}#}
-{#    </ul>#}
-
+    {% for taskObject in task %}
+        <h1>{{ taskObject.name }}</h1>
+    {% endfor %}
 {% endblock %}

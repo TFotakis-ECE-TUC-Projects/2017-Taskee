@@ -12,6 +12,8 @@ class LoginFormView(View):
     template_name = 'login/login.html'
 
     def get(self, request):
+        if request.user.is_authenticated:
+            return redirect('taskmanager:index')
         form = self.form_class(None)
         return render(request, self.template_name, {'form': form})
 
