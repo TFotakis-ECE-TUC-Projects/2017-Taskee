@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import generic
-
+from django.views.generic.edit import CreateView
 from .models import Task
 
 
@@ -19,3 +19,9 @@ class IndexView(LoginRequiredMixin, generic.ListView):
 class DetailView(generic.DetailView):
     model= Task
     template_name = 'taskmanager/taskDetail.html'
+
+
+class CreateTask(CreateView):
+    model = Task
+    fields = ['name', 'user', 'type', 'place', 'notes']
+
