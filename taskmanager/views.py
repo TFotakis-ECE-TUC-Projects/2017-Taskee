@@ -34,6 +34,6 @@ class CreateTask(CreateView):
 
 class DeleteTask(DeleteView):
     model = Task
-    success_url = reverse_lazy(DetailView) # This is where this view will
+    success_url = reverse_lazy(IndexView) # This is where this view will
                                             # redirect the user
     template_name = 'taskmanager/taskDelete.html'
