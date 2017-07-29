@@ -1,8 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse_lazy
+from django.shortcuts import redirect
 from django.views import generic
 from django.views.generic.edit import CreateView, DeleteView
 
+from .forms import TaskForm, WeeklyScheduleForm
 from .models import Task, WeeklySchedule
 
 
@@ -13,7 +15,21 @@ class IndexView(LoginRequiredMixin, generic.TemplateView):
 
 class CreateTask(CreateView):
     model = Task
-    fields = ['name', 'user', 'type', 'place', 'notes']
+    form_class = TaskForm
+
+    def post(self, request):
+        form = self.form_class(data=request.POST)
+
+        if form.is_valid():
+            task = form.save(commit=False)
+            task.user = request.user
+            task.name = form.cleaned_data['name']
+            task.type = form.cleaned_data['type']
+            task.place = form.cleaned_data['place']
+            task.notes = form.cleaned_data['notes']
+            task.save()
+            return redirect('taskmanager:taskView')
+        return redirect('taskmanager:task-add')
 
 
 class TaskView(LoginRequiredMixin, generic.ListView):
@@ -39,7 +55,23 @@ class DeleteTask(DeleteView):
 
 class CreateWeeklySchedule(CreateView):
     model = WeeklySchedule
-    fields = ['user', 'task', 'instanceId', 'day', 'startingTime', 'duration', 'canMove', 'valid']
+    form_class = WeeklyScheduleForm
+
+    def post(self, request):
+        form = self.form_class(data=request.POST)
+        if form.is_valid():
+            weeklySchedule = form.save(commit=False)
+            weeklySchedule.user = request.user
+            weeklySchedule.task = form.cleaned_data['task']
+            weeklySchedule.instanceId = form.cleaned_data['instanceId']
+            weeklySchedule.day = form.cleaned_data['day']
+            weeklySchedule.startingTime = form.cleaned_data['startingTime']
+            weeklySchedule.duration = form.cleaned_data['duration']
+            weeklySchedule.canMove = form.cleaned_data['canMove']
+            weeklySchedule.valid = form.cleaned_data['valid']
+            weeklySchedule.save()
+            return redirect('taskmanager:weeklyScheduleView')
+        return redirect('taskmanager:weeklySchedule-add')
 
 
 class WeeklyScheduleView(LoginRequiredMixin, generic.ListView):
