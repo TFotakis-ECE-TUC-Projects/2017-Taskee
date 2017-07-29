@@ -11,14 +11,14 @@
     <div class="row">
 
 
-        <!-- Right Task Info -->
+        <!-- Right Song Info -->
         <div class="col-sm-8 col-md-9">
 
 
             <div class="panel panel-default">
                 <div class="panel-body">
 
-                    <h3>Task Info</h3>
+                    <h2>Task Details</h2>
 
                     {% if error_message %}
                         <p><strong>{{ error_message }}</strong></p>
@@ -46,13 +46,6 @@
 {#                        {% endfor %}#}
                         </tbody>
                     </table>
-                    <div class="form-group">
-                        <div class="col-sm-offset-11 col-sm-10">
-                            <a href="{% url 'taskmanager:delete' %}">
-                            <button type="submit" class="btn btn-danger">Delete </button>
-                            </a>
-                        </div>
-                    </div>
 
                 </div>
             </div>
