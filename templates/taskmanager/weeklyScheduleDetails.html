@@ -37,13 +37,13 @@
                             </tr>
                             </tbody>
                         </table>
-                        {#                        <div class="form-group">#}
-                        {#                            <div class="col-sm-offset-11 col-sm-10">#}
-                        {#                                <a href="{% url 'taskmanager:delete' weeklySchedule.pk %}">#}
-                        {#                                    <button type="submit" class="btn btn-danger">Delete</button>#}
-                        {#                                </a>#}
-                        {#                            </div>#}
-                        {#                        </div>#}
+                        <div class="form-group">
+                            <div class="col-sm-offset-11 col-sm-10">
+                                <a href="{% url 'taskmanager:weeklyScheduleDelete' weeklySchedule.pk %}">
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

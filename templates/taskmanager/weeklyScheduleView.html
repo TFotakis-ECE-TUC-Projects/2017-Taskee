@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Home - {% endblock %}
+{% block weeklyScheduleView %}active{% endblock %}
+{% block body %}
+    <h1>Weekly Schedule</h1>
+    <ul>
+        {% for weeklySchedule in weeklySchedule_list %}
+            <li><a href="{% url 'taskmanager:weeklyScheduleDetails' weeklySchedule.id %}">{{ weeklySchedule.task.name }}
+                - {{ weeklySchedule.day }}</a></li>
+        {% endfor %}
+    </ul>
+    <div class="form-group">
+        <div class="col-lg-4">
+            <a href="{% url 'taskmanager:weeklySchedule-add' %}">
+                <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> Add a new
+                    Weekly Schedule
+                </button>
+            </a>
+        </div>
+    </div>
+{% endblock %}

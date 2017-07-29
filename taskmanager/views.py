@@ -6,8 +6,17 @@ from django.views.generic.edit import CreateView, DeleteView
 from .models import Task, WeeklySchedule
 
 
-# generic.TemplateView
-class IndexView(LoginRequiredMixin, generic.ListView):
+class IndexView(LoginRequiredMixin, generic.TemplateView):
+    template_name = 'taskmanager/index.html'
+    login_url = '/login/'
+
+
+class CreateTask(CreateView):
+    model = Task
+    fields = ['name', 'user', 'type', 'place', 'notes']
+
+
+class TaskView(LoginRequiredMixin, generic.ListView):
     template_name = 'taskmanager/taskView.html'
     context_object_name = 'task_list'
     login_url = '/login/'
@@ -21,24 +30,34 @@ class DetailView(generic.DetailView):
     template_name = 'taskmanager/taskDetail.html'
 
 
-class CreateTask(CreateView):
+class DeleteTask(DeleteView):
     model = Task
-    fields = ['name', 'user', 'type', 'place', 'notes']
+    success_url = reverse_lazy('taskmanager:taskView')  # This is where this view will redirect the user
+    template_name = 'delete_confirm.html'
 
 
 class CreateWeeklySchedule(CreateView):
     model = WeeklySchedule
     fields = ['user', 'task', 'instanceId', 'day', 'startingTime', 'duration', 'canMove', 'valid']
-    # success_url = render('taskmanager:weeklyScheduleDetails', model.pk)
 
 
-class WeeklyScheduleDetailView(DetailView):
+class WeeklyScheduleView(LoginRequiredMixin, generic.ListView):
+    template_name = 'taskmanager/weeklyScheduleView.html'
+    context_object_name = 'weeklySchedule_list'
+    login_url = '/login/'
+
+    def get_queryset(self):
+        return WeeklySchedule.objects.all()
+
+
+class WeeklyScheduleDetailView(generic.DetailView):
     model = WeeklySchedule
     template_name = 'taskmanager/weeklyScheduleDetails.html'
+    context_object_name = 'weeklySchedule'
 
 
-class DeleteTask(DeleteView):
-    model = Task
-    success_url = reverse_lazy('taskmanager:index')  # This is where this view will
-    # redirect the user
-    template_name = 'taskmanager/taskDelete.html'
+class DeleteWeeklySchedule(DeleteView):
+    model = WeeklySchedule
+    success_url = reverse_lazy('taskmanager:weeklyScheduleView')  # This is where this view will redirect the user
+    template_name = 'delete_confirm.html'
+    context_object_name = "object"

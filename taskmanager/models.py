@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
-from django.db import models
 from django.core.urlresolvers import reverse
+from django.db import models
 
 
 class TaskType(models.Model):
@@ -31,7 +31,7 @@ class Task(models.Model):
     notes = models.CharField(max_length=1000)
 
     def get_absolute_url(self):
-        return reverse('taskmanager:detail', kwargs={'pk':self.pk})
+        return reverse('taskmanager:taskDetail', kwargs={'pk': self.pk})
 
     def __str__(self): return self.name
 
@@ -47,6 +47,9 @@ class WeeklySchedule(models.Model):
     valid = models.BooleanField(default=False)
 
     def __str__(self): return self.task.name + ' - ' + self.day.name + ' ' + str(self.startingTime)
+
+    def get_absolute_url(self):
+        return reverse('taskmanager:weeklyScheduleDetails', kwargs={'pk': self.pk})
 
 
 class Availability(models.Model):

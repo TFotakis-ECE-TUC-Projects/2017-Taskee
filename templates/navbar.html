@@ -13,22 +13,17 @@
         {#        Items#}
         <div class="collapse navbar-collapse" id="topNavBar">
                         <ul class="nav navbar-nav">
-                            <li class="{% block addTaskActive %}{% endblock %}">
-                                <a href="{% url 'taskmanager:task-add' %}">
-                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;Add Task
+                            <li class="{% block weeklyScheduleView %}{% endblock %}">
+                                <a href="{% url 'taskmanager:weeklyScheduleView' %}">
+                                    <span class="glyphicon glyphicon-book" aria-hidden="true"></span>&nbsp;Weekly
+                                    Schedules
                                 </a>
                             </li>
-                            <li class="{% block addWeeklyScheduleActive %}{% endblock %}">
-                                <a href="{% url 'taskmanager:weeklySchedule-add' %}">
-                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;Add Weekly
-                                    Schedule
+                            <li class="{% block taskView %}{% endblock %}">
+                                <a href="{% url 'taskmanager:taskView' %}">
+                                    <span class="glyphicon glyphicon-check" aria-hidden="true"></span>&nbsp;Tasks
                                 </a>
                             </li>
-            {#                <li class="{% block songsActive %}{% endblock %}">#}
-            {#                    <a href="#">#}
-            {#                        <span class="glyphicon glyphicon-music" aria-hidden="true"></span>&nbsp;Songs#}
-            {#                    </a>#}
-            {#                </li>#}
                         </ul>
 
             <ul class="nav navbar-nav navbar-right">
