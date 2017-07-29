@@ -22,7 +22,8 @@ class TaskView(LoginRequiredMixin, generic.ListView):
     login_url = '/login/'
 
     def get_queryset(self):
-        return Task.objects.all()
+        # return Task.objects.all()
+        return Task.objects.filter(user=self.request.user)
 
 
 class DetailView(generic.DetailView):
@@ -47,7 +48,8 @@ class WeeklyScheduleView(LoginRequiredMixin, generic.ListView):
     login_url = '/login/'
 
     def get_queryset(self):
-        return WeeklySchedule.objects.all().order_by('day', 'startingTime')
+        # return WeeklySchedule.objects.all().order_by('day', 'startingTime')
+        return WeeklySchedule.objects.filter(user=self.request.user).order_by('day', 'startingTime')
 
 
 class WeeklyScheduleDetailView(generic.DetailView):
