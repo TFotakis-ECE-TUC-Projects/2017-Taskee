@@ -18,6 +18,12 @@
                                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;Add Task
                                 </a>
                             </li>
+                            <li class="{% block addWeeklyScheduleActive %}{% endblock %}">
+                                <a href="{% url 'taskmanager:weeklySchedule-add' %}">
+                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;Add Weekly
+                                    Schedule
+                                </a>
+                            </li>
             {#                <li class="{% block songsActive %}{% endblock %}">#}
             {#                    <a href="#">#}
             {#                        <span class="glyphicon glyphicon-music" aria-hidden="true"></span>&nbsp;Songs#}

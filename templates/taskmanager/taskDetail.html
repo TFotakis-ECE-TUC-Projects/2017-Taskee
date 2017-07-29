@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}{{ task }}{% endblock %}
-{% block albums_active %}active{% endblock %}
+{% block title %}{{ task.name }} - {% endblock %}
 {% block body %}
     <div class="container-fluid songs-container">
         <div class="row">
@@ -34,7 +33,7 @@
                         </table>
                         <div class="form-group">
                             <div class="col-sm-offset-11 col-sm-10">
-                                <a href="{% url 'taskmanager:delete' task.pk %}">
+                                <a href="{% url 'taskmanager:taskDelete' task.pk %}">
                                     <button type="submit" class="btn btn-danger">Delete</button>
                                 </a>
                             </div>

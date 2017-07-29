@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse_lazy
 from django.views import generic
 from django.views.generic.edit import CreateView, DeleteView
 
-from .models import Task
+from .models import Task, WeeklySchedule
 
 
 # generic.TemplateView
@@ -26,10 +26,16 @@ class CreateTask(CreateView):
     fields = ['name', 'user', 'type', 'place', 'notes']
 
 
-# class DeleteTask(request):
-#     model= Task
-#     if request.POST.get('delete'):
-#         obj.delete()
+class CreateWeeklySchedule(CreateView):
+    model = WeeklySchedule
+    fields = ['user', 'task', 'instanceId', 'day', 'startingTime', 'duration', 'canMove', 'valid']
+    # success_url = render('taskmanager:weeklyScheduleDetails', model.pk)
+
+
+class WeeklyScheduleDetailView(DetailView):
+    model = WeeklySchedule
+    template_name = 'taskmanager/weeklyScheduleDetails.html'
+
 
 class DeleteTask(DeleteView):
     model = Task
