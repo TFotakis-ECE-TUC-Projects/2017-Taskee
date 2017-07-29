@@ -1,7 +1,9 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import generic
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView,DeleteView
 from .models import Task
+from django.core.urlresolvers import reverse_lazy
+
 
 
 # generic.TemplateView
@@ -25,3 +27,13 @@ class CreateTask(CreateView):
     model = Task
     fields = ['name', 'user', 'type', 'place', 'notes']
 
+# class DeleteTask(request):
+#     model= Task
+#     if request.POST.get('delete'):
+#         obj.delete()
+
+class DeleteTask(DeleteView):
+    model = Task
+    success_url = reverse_lazy(DetailView) # This is where this view will
+                                            # redirect the user
+    template_name = 'taskmanager/taskDelete.html'
