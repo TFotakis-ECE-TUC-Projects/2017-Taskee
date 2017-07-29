@@ -1,10 +1,9 @@
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-# from django.http import HttpResponse
-from django.shortcuts import render
 from django.views import generic
-
+from django.views.generic.edit import CreateView,DeleteView
 from .models import Task
+from django.core.urlresolvers import reverse_lazy
+
 
 
 # generic.TemplateView
@@ -17,8 +16,24 @@ class IndexView(LoginRequiredMixin, generic.ListView):
         return Task.objects.all()
 
 
-@login_required(login_url='/login/')
-def taskdetail(request, primaryKey):
-    task = Task.objects.filter(id=primaryKey)
-    # return HttpResponse("<h2>Details: " + str(pk) + "</h2>")
-    return render(request, 'taskmanager/taskDetail.html', {'task': task})
+
+
+class DetailView(generic.DetailView):
+    model= Task
+    template_name = 'taskmanager/taskDetail.html'
+
+
+class CreateTask(CreateView):
+    model = Task
+    fields = ['name', 'user', 'type', 'place', 'notes']
+
+# class DeleteTask(request):
+#     model= Task
+#     if request.POST.get('delete'):
+#         obj.delete()
+
+class DeleteTask(DeleteView):
+    model = Task
+    success_url = reverse_lazy(DetailView) # This is where this view will
+                                            # redirect the user
+    template_name = 'taskmanager/taskDelete.html'

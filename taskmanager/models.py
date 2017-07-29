@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.core.urlresolvers import reverse
 
 
 class TaskType(models.Model):
@@ -28,6 +29,9 @@ class Task(models.Model):
     type = models.ForeignKey(TaskType, on_delete=models.CASCADE, default=1)
     place = models.CharField(max_length=250)
     notes = models.CharField(max_length=1000)
+
+    def get_absolute_url(self):
+        return reverse('taskmanager:detail', kwargs={'pk':self.pk})
 
     def __str__(self): return self.name
 
