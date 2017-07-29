@@ -8,6 +8,8 @@ class TaskType(models.Model):
 
     def __str__(self): return self.name
 
+    def get_absolute_url(self):
+        return reverse('taskmanager:taskTypeView')#, kwargs={'pk': self.pk})
 
 class TaskTypeWeight(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

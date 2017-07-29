@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block body %}
+    <ul>
+        {% for taskType in taskType_list %}
+            <li><a href="{% url 'taskmanager:taskTypeDetail' taskType.id %}">{{ taskType.name }}</a></li>
+        {% endfor %}
+    </ul>
+    <div class="form-group">
+        <div class="col-lg-4">
+            <a href="{% url 'taskmanager:taskType-add' %}">
+                <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> Add a new
+                    Task Type
+                </button>
+            </a>
+        </div>
+    </div>
+{% endblock %}

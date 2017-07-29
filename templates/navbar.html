@@ -24,6 +24,11 @@
                                     <span class="glyphicon glyphicon-check" aria-hidden="true"></span>&nbsp;Tasks
                                 </a>
                             </li>
+                           <li class="{% block taskTypeView %}{% endblock %}">
+                                <a href="{% url 'taskmanager:taskTypeView' %}">
+                                    <span class="glyphicon glyphicon-check" aria-hidden="true"></span>&nbsp;Task Types
+                                </a>
+                            </li>
                         </ul>
 
             <ul class="nav navbar-nav navbar-right">
