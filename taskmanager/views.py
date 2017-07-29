@@ -47,7 +47,7 @@ class WeeklyScheduleView(LoginRequiredMixin, generic.ListView):
     login_url = '/login/'
 
     def get_queryset(self):
-        return WeeklySchedule.objects.all()
+        return WeeklySchedule.objects.all().order_by('day', 'startingTime')
 
 
 class WeeklyScheduleDetailView(generic.DetailView):

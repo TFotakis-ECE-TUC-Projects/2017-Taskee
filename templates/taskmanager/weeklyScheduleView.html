@@ -6,7 +6,7 @@
     <ul>
         {% for weeklySchedule in weeklySchedule_list %}
             <li><a href="{% url 'taskmanager:weeklyScheduleDetails' weeklySchedule.id %}">{{ weeklySchedule.task.name }}
-                - {{ weeklySchedule.day }}</a></li>
+                - {{ weeklySchedule.day }} - {{ weeklySchedule.startingTime }}</a></li>
         {% endfor %}
     </ul>
     <div class="form-group">
