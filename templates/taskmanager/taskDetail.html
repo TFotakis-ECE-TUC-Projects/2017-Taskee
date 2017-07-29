@@ -1,7 +1,65 @@
+
+
+
 {% extends 'base.html' %}
-{% block title %}Task Details{% endblock %}
+{% block title %}{{ task }}{% endblock %}
+{% block albums_active %}active{% endblock %}
+
 {% block body %}
-    {% for taskObject in task %}
-        <h1>{{ taskObject.name }}</h1>
-    {% endfor %}
+<div class="container-fluid songs-container">
+
+    <div class="row">
+
+
+        <!-- Right Song Info -->
+        <div class="col-sm-8 col-md-9">
+
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+                    <h2>Task Details</h2>
+
+                    {% if error_message %}
+                        <p><strong>{{ error_message }}</strong></p>
+                    {% endif %}
+
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>User</th>
+                            <th>Place</th>
+                            <th>Notes</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+{#                        {% for task in task_list %}#}
+                            <tr>
+                                <td>{{ task.name }}</td>
+                                <td>{{ task.type }}</td>
+                                <td>{{ task.user }}</td>
+                                <td>{{ task.place }}</td>
+                                <td>{{ task.notes }}</td>
+                            </tr>
+{#                        {% endfor %}#}
+                        </tbody>
+                    </table>
+                    <div class="form-group">
+                        <div class="col-sm-offset-11 col-sm-10">
+                            <a href="{% url 'taksmanager:delete' %}">
+                            <button type="submit" class="btn btn-danger">Delete </button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
 {% endblock %}
