@@ -120,7 +120,7 @@ class CreateAvailability(CreateView):
             availability.priority = form.cleaned_data['priority']
             availability.save()
             return redirect('taskmanager:availabilityView')
-        return redirect('taskmanager:availability-add')
+
 
 class AvailabilitiesView(LoginRequiredMixin, generic.ListView):
     template_name = 'taskmanager/availabilitiesView.html'
