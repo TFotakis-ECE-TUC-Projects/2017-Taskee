@@ -26,4 +26,7 @@ urlpatterns = [
     url(r'^taskType/$', views.TaskTypeView.as_view(), name='taskTypeView'),
     url(r'^taskType/(?P<pk>[0-9]+)/$', views.TaskTypeDetailView.as_view(), name='taskTypeDetail'),
     url(r'^taskType/(?P<pk>\d+)/delete/$', views.DeleteTaskType.as_view(), name='taskTypeDelete'),
+
+    url(r'addTaskTypeWeight/$', views.CreateTaskTypeWeight.as_view(), name='taskTypeWeight-add'),
+    url(r'^taskTypeWeight/$', views.TaskTypeWeightView.as_view(), name='taskTypeWeightUpdate'),
 ]

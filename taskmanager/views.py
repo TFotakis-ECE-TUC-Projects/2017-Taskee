@@ -5,8 +5,7 @@ from django.views import generic
 from django.views.generic.edit import CreateView, DeleteView
 
 from .forms import TaskForm, WeeklyScheduleForm, AvailabilityForm
-from .models import Availability, TaskType
-from .models import Task, WeeklySchedule
+from .models import Task, WeeklySchedule, TaskTypeWeight, Availability, TaskType
 
 
 class IndexView(LoginRequiredMixin, generic.TemplateView):
@@ -177,3 +176,15 @@ class TaskTypeDetailView(generic.DetailView):
     model = TaskType
     template_name = 'taskmanager/taskTypeDetails.html'
     context_object_name = 'taskType'
+
+
+class TaskTypeWeightView(generic.ListView):
+    model = TaskTypeWeight
+    # fields = ['weight']
+    template_name = 'taskmanager/taskTypeView.html'
+    context_object_name = 'taskType_list'
+
+
+class CreateTaskTypeWeight(CreateView):
+    model = TaskTypeWeight
+    fields = ['user', 'taskType', 'weight']
