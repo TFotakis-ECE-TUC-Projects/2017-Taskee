@@ -2,13 +2,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import redirect
 from django.views import generic
-from django.views.generic.edit import CreateView, DeleteView, UpdateView
-
 from django.views.generic.edit import CreateView, DeleteView
-from django.shortcuts import render
+from django.views.generic.edit import UpdateView
+
 from .forms import TaskForm, WeeklyScheduleForm, AvailabilityForm
-from .models import Availability, TaskType, TaskTypeWeight
-from .models import Task, WeeklySchedule
 from .models import Task, WeeklySchedule, TaskTypeWeight, Availability, TaskType
 
 
@@ -79,8 +76,6 @@ class CreateWeeklySchedule(CreateView):
             weeklySchedule.save()
             return redirect('taskmanager:weeklyScheduleView')
         return redirect('taskmanager:weeklySchedule-add')
-
-
 
 
 class WeeklyScheduleView(LoginRequiredMixin, generic.ListView):
@@ -188,8 +183,8 @@ class TaskTypeDetailView(generic.DetailView):
 
 
 class TaskTypeWeightUpdate(UpdateView):
-    model= TaskTypeWeight
-    fields = ['user','taskType', 'weight']
+    model = TaskTypeWeight
+    fields = ['user', 'taskType', 'weight']
 
 
 class ShowDetails(LoginRequiredMixin, generic.ListView):
@@ -200,4 +195,4 @@ class ShowDetails(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         # return WeeklySchedule.objects.all().order_by('day', 'startingTime')
         return WeeklySchedule.objects.filter(user=self.request.user).order_by('day', 'startingTime')
-    #return render(request,'taskmanager/showdetails.html')
+        # return render(request,'taskmanager/showdetails.html')
