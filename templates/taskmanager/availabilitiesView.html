@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Availabilities{% endblock %}
+{% block availabilityView %}active{% endblock %}
+{% block body %}
+    <h2>Availabilities</h2>
+    <ul>
+        {% for availability in availability_list %}
+            <li><a href="{% url 'taskmanager:availabilityDetails' availability.id %}">{{ availability.task.name }}
+                - {{ availability.day }} - {{ availability.startingTime }}</a></li>
+        {% endfor %}
+    </ul>
+    <div class="form-group">
+        <div class="col-lg-4">
+            <a href="{% url 'taskmanager:availability-add' %}">
+                <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> Add a new
+                    Availability
+                </button>
+            </a>
+        </div>
+    </div>
+{% endblock %}
