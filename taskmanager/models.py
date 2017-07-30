@@ -17,6 +17,9 @@ class TaskTypeWeight(models.Model):
     taskType = models.ForeignKey(TaskType, on_delete=models.CASCADE)
     weight = models.IntegerField(default=1)
 
+    def get_absolute_url(self):
+        return reverse('taskmanager:taskTypeView')#, kwargs={'pk': self.pk})
+
     def __str__(self): return self.taskType.name
 
 

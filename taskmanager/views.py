@@ -2,9 +2,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import redirect
 from django.views import generic
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
+
 from django.views.generic.edit import CreateView, DeleteView
 from django.shortcuts import render
 from .forms import TaskForm, WeeklyScheduleForm, AvailabilityForm
+from .models import Availability, TaskType, TaskTypeWeight
+from .models import Task, WeeklySchedule
 from .models import Task, WeeklySchedule, TaskTypeWeight, Availability, TaskType
 
 
@@ -175,21 +179,17 @@ class DeleteTaskType(DeleteView):
 
 
 class TaskTypeDetailView(generic.DetailView):
-    model = TaskType
+    model = TaskTypeWeight
     template_name = 'taskmanager/taskTypeDetails.html'
-    context_object_name = 'taskType'
+    context_object_name = 'taskTypeWeight'
 
 
-class TaskTypeWeightView(generic.ListView):
-    model = TaskTypeWeight
-    # fields = ['weight']
-    template_name = 'taskmanager/taskTypeView.html'
-    context_object_name = 'taskType_list'
+########### TaskType weight ##########
 
 
-class CreateTaskTypeWeight(CreateView):
-    model = TaskTypeWeight
-    fields = ['user', 'taskType', 'weight']
+class TaskTypeWeightUpdate(UpdateView):
+    model= TaskTypeWeight
+    fields = ['user','taskType', 'weight']
 
 
 class ShowDetails(LoginRequiredMixin, generic.ListView):

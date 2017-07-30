@@ -15,17 +15,19 @@
                             <thead>
                             <tr>
                                 <th>Name</th>
+                                <th>Weight</th>
                             </thead>
                             <tbody>
                             <tr>
-                                <td>{{ taskType.name}}</td>
+                                <td>{{ taskTypeWeight.taskType}}</td>
+                                <td>{{ taskTypeWeight.weight}}</td>
                             </tr>
                             </tbody>
                         </table>
                         <div class="form-group">
                             <div class="col-sm-offset-11 col-sm-10">
-                                <a href="{% url 'taskmanager:taskTypeDelete' taskType.pk %}">
-                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                <a href="{% url 'taskmanager:taskTypeUpdate' taskTypeWeight.pk %}">
+                                    <button type="submit" class="btn btn-warning">Edit</button>
                                 </a>
                             </div>
                         </div>
