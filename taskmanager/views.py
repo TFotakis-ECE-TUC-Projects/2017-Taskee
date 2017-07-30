@@ -8,18 +8,21 @@ from django.views.generic.edit import UpdateView
 from .forms import TaskForm, WeeklyScheduleForm, AvailabilityForm
 from .models import Task, WeeklySchedule, TaskTypeWeight, Availability, TaskType
 
+LOGIN_URL = '/login/'
+
 
 class IndexView(LoginRequiredMixin, generic.TemplateView):
     template_name = 'taskmanager/index.html'
-    login_url = '/login/'
+    login_url = LOGIN_URL
 
 
 ######## Task ########
-class CreateTask(CreateView):
+class CreateTask(LoginRequiredMixin, CreateView):
     model = Task
     form_class = TaskForm
+    login_url = LOGIN_URL
 
-    def post(self, request):
+    def post(self, request, **kwargs):
         form = self.form_class(data=request.POST)
 
         if form.is_valid():
@@ -37,31 +40,33 @@ class CreateTask(CreateView):
 class TaskView(LoginRequiredMixin, generic.ListView):
     template_name = 'taskmanager/taskView.html'
     context_object_name = 'task_list'
-    login_url = '/login/'
+    login_url = LOGIN_URL
 
     def get_queryset(self):
         # return Task.objects.all()
         return Task.objects.filter(user=self.request.user)
 
 
-class DetailView(generic.DetailView):
+class DetailView(LoginRequiredMixin, generic.DetailView):
     model = Task
     template_name = 'taskmanager/taskDetail.html'
+    login_url = LOGIN_URL
 
 
-class DeleteTask(DeleteView):
+class DeleteTask(LoginRequiredMixin, DeleteView):
     model = Task
     success_url = reverse_lazy('taskmanager:taskView')  # This is where this view will redirect the user
     template_name = 'delete_confirm.html'
+    login_url = LOGIN_URL
 
 
 ######### WeeklySchedule ###########
-
-class CreateWeeklySchedule(CreateView):
+class CreateWeeklySchedule(LoginRequiredMixin, CreateView):
     model = WeeklySchedule
     form_class = WeeklyScheduleForm
+    login_url = LOGIN_URL
 
-    def post(self, request):
+    def post(self, request, **kwargs):
         form = self.form_class(data=request.POST)
         if form.is_valid():
             weeklySchedule = form.save(commit=False)
@@ -81,33 +86,34 @@ class CreateWeeklySchedule(CreateView):
 class WeeklyScheduleView(LoginRequiredMixin, generic.ListView):
     template_name = 'taskmanager/weeklyScheduleView.html'
     context_object_name = 'weeklySchedule_list'
-    login_url = '/login/'
+    login_url = LOGIN_URL
 
     def get_queryset(self):
-        # return WeeklySchedule.objects.all().order_by('day', 'startingTime')
         return WeeklySchedule.objects.filter(user=self.request.user).order_by('day', 'startingTime')
 
 
-class WeeklyScheduleDetailView(generic.DetailView):
+class WeeklyScheduleDetailView(LoginRequiredMixin, generic.DetailView):
     model = WeeklySchedule
     template_name = 'taskmanager/weeklyScheduleDetails.html'
     context_object_name = 'weeklySchedule'
+    login_url = LOGIN_URL
 
 
-class DeleteWeeklySchedule(DeleteView):
+class DeleteWeeklySchedule(LoginRequiredMixin, DeleteView):
     model = WeeklySchedule
     success_url = reverse_lazy('taskmanager:weeklyScheduleView')  # This is where this view will redirect the user
     template_name = 'delete_confirm.html'
     context_object_name = "object"
+    login_url = LOGIN_URL
 
 
 ########## Availability ###################
-
-class CreateAvailability(CreateView):
+class CreateAvailability(LoginRequiredMixin, CreateView):
     model = Availability
     form_class = AvailabilityForm
+    login_url = LOGIN_URL
 
-    def post(self, request):
+    def post(self, request, **kwargs):
         form = self.form_class(data=request.POST)
         if form.is_valid():
             availability = form.save(commit=False)
@@ -126,73 +132,66 @@ class CreateAvailability(CreateView):
 class AvailabilitiesView(LoginRequiredMixin, generic.ListView):
     template_name = 'taskmanager/availabilitiesView.html'
     context_object_name = 'availability_list'
-    login_url = '/login/'
+    login_url = LOGIN_URL
 
     def get_queryset(self):
         return Availability.objects.filter(user=self.request.user).order_by('day', 'startingTime')
 
 
-class AvailabilitiesDetailView(generic.DetailView):
+class AvailabilitiesDetailView(LoginRequiredMixin, generic.DetailView):
     model = Availability
     template_name = 'taskmanager/availabilitiesDetails.html'
     context_object_name = "availability"
+    login_url = LOGIN_URL
 
 
-class DeleteAvailabilities(DeleteView):
+class DeleteAvailabilities(LoginRequiredMixin, DeleteView):
     model = Availability
     success_url = reverse_lazy('taskmanager:availabilityView')  # This is where this view will redirect the user
     template_name = 'delete_confirm.html'
     context_object_name = "object"
-
-
-###########################################
+    login_url = LOGIN_URL
 
 
 ######### Tasktype ########
-
-class CreateTaskType(CreateView):
+class CreateTaskType(LoginRequiredMixin, CreateView):
     model = TaskType
     fields = ['name']
+    login_url = LOGIN_URL
 
 
 class TaskTypeView(LoginRequiredMixin, generic.ListView):
     model = TaskTypeWeight
     template_name = 'taskmanager/taskTypeView.html'
-    context_object_name = 'taskType_list'
-    login_url = '/login/'
-
-    # def get_queryset(self):
-    #      #return TaskType.objects.all()
-    #      return Task.objects.filter(user=self.request.user)
+    context_object_name = 'taskList'
+    login_url = LOGIN_URL
 
 
-class DeleteTaskType(DeleteView):
+class DeleteTaskType(LoginRequiredMixin, DeleteView):
     model = TaskType
     success_url = reverse_lazy('taskmanager:taskTypeView')  # This is where this view will redirect the user
     template_name = 'delete_confirm.html'
     context_object_name = "object"
 
 
-class TaskTypeDetailView(generic.DetailView):
+class TaskTypeDetailView(LoginRequiredMixin, generic.DetailView):
     model = TaskTypeWeight
     template_name = 'taskmanager/taskTypeDetails.html'
     context_object_name = 'taskTypeWeight'
+    login_url = LOGIN_URL
 
 
 ########### TaskType weight ##########
-
-
-class TaskTypeWeightUpdate(UpdateView):
+class TaskTypeWeightUpdate(LoginRequiredMixin, UpdateView):
     model = TaskTypeWeight
     fields = ['user', 'taskType', 'weight']
+    login_url = LOGIN_URL
 
 
 class ShowDetails(LoginRequiredMixin, generic.ListView):
     template_name = 'taskmanager/showdetails.html'
     context_object_name = 'weeklySchedule_list'
-    login_url = '/login/'
+    login_url = LOGIN_URL
 
     def get_queryset(self):
-        # return WeeklySchedule.objects.all().order_by('day', 'startingTime')
         return WeeklySchedule.objects.filter(user=self.request.user).order_by('day', 'startingTime')
-        # return render(request,'taskmanager/showdetails.html')
