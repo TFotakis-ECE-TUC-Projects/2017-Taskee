@@ -3,7 +3,9 @@
 {% block body %}
     <ul>
         {% for taskType in taskType_list %}
-            <li><a href="{% url 'taskmanager:taskTypeDetail' taskType.id %}">{{ taskType.name }}</a></li>
+            {%  if request.user == taskType.user %}
+                <li><a href="{% url 'taskmanager:taskTypeDetail' taskType.id %}">{{ taskType.taskType }}</a></li>
+            {% endif %}
         {% endfor %}
     </ul>
     <div class="form-group">

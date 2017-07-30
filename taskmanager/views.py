@@ -156,7 +156,7 @@ class CreateTaskType(CreateView):
 
 
 class TaskTypeView(LoginRequiredMixin, generic.ListView):
-    model = TaskType
+    model = TaskTypeWeight
     template_name = 'taskmanager/taskTypeView.html'
     context_object_name = 'taskType_list'
     login_url = '/login/'
