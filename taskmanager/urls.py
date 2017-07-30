@@ -29,4 +29,7 @@ urlpatterns = [
 
     url(r'addTaskTypeWeight/$', views.CreateTaskTypeWeight.as_view(), name='taskTypeWeight-add'),
     url(r'^taskTypeWeight/$', views.TaskTypeWeightView.as_view(), name='taskTypeWeightUpdate'),
+
+    url(r'showdetails/$', views.ShowDetails.as_view(), name='showdetails'),
+
 ]

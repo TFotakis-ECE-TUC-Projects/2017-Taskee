@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block title %}Details{% endblock %}
+{% block body %}
+    <div class="container-fluid songs-container">
+        <div class="row">
+            <!-- Right WeeklySchedule Info -->
+            <div class="col-sm-8 col-md-9">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h2>Task Details</h2>
+                        {% if error_message %}
+                            <p><strong>{{ error_message }}</strong></p>
+                        {% endif %}
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Task</th>
+                                <th>Instance ID</th>
+                                <th>Day</th>
+                                <th>Starting Time</th>
+                                <th>Duration</th>
+                                <th>Movable</th>
+                                <th>Valid</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for weeklySchedule in weeklySchedule_list %}
+                            <tr>
+                                <td>{{ weeklySchedule.user }}</td>
+                                <td>{{ weeklySchedule.task.name }}</td>
+                                <td>{{ weeklySchedule.instanceId }}</td>
+                                <td>{{ weeklySchedule.day }}</td>
+                                <td>{{ weeklySchedule.startingTime }}</td>
+                                <td>{{ weeklySchedule.duration }}</td>
+                                <td>{{ weeklySchedule.canMove }}</td>
+                                <td>{{ weeklySchedule.valid }}</td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <div class="form-group">
+                            <div class="col-sm-offset-11 col-sm-10">
+                                <a href="{% url 'taskmanager:weeklyScheduleView' %}">
+                                    <button type="submit" class="btn btn-danger">Back</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
