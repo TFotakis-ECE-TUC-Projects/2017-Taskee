@@ -17,6 +17,11 @@ urlpatterns = [
     url(r'addWeeklySchedule/$', views.CreateWeeklySchedule.as_view(), name='weeklySchedule-add'),
     url(r'^weeklySchedule/(?P<pk>\d+)/delete/$', views.DeleteWeeklySchedule.as_view(), name='weeklyScheduleDelete'),
 
+    url(r'^availabilities/$', views.AvailabilitiesView.as_view(), name='availabilityView'),
+    url(r'^availabilities/(?P<pk>[0-9]+)/$', views.AvailabilitiesDetailView.as_view(), name='availabilityDetails'),
+    url(r'^addavailabilities/$', views.CreateAvailability.as_view(), name='availability-add'),
+    url(r'^availabilities/(?P<pk>[0-9]+)/delete$', views.DeleteAvailabilities.as_view(), name='availabilityDelete'),
+
     url(r'addTaskType/$', views.CreateTaskType.as_view(), name='taskType-add'),
     url(r'^taskType/$', views.TaskTypeView.as_view(), name='taskTypeView'),
     url(r'^taskType/(?P<pk>[0-9]+)/$', views.TaskTypeDetailView.as_view(), name='taskTypeDetail'),

@@ -4,8 +4,8 @@ from django.shortcuts import redirect
 from django.views import generic
 from django.views.generic.edit import CreateView, DeleteView
 
-from .models import Task, WeeklySchedule,Availability,TaskType
-from .forms import TaskForm, WeeklyScheduleForm
+from .models import Task, WeeklySchedule, Availability, TaskType
+from .forms import TaskForm, WeeklyScheduleForm, AvailabilityForm
 from .models import Task, WeeklySchedule
 
 
@@ -98,6 +98,49 @@ class DeleteWeeklySchedule(DeleteView):
     success_url = reverse_lazy('taskmanager:weeklyScheduleView')  # This is where this view will redirect the user
     template_name = 'delete_confirm.html'
     context_object_name = "object"
+
+
+
+########## Availability ###################
+
+class CreateAvailability(CreateView):
+    model = Availability
+    form_class = AvailabilityForm
+
+    def post(self, request):
+        form = self.form_class(data=request.POST)
+        if form.is_valid():
+            availability = form.save(commit=False)
+            availability.user = request.user
+            availability.task = form.cleaned_data['task']
+            availability.instanceId = form.cleaned_data['instanceId']
+            availability.day = form.cleaned_data['day']
+            availability.startingTime = form.cleaned_data['startingTime']
+            availability.endingTime = form.cleaned_data['duration']
+            availability.priority = form.cleaned_data['priority']
+            availability.save()
+            return redirect('taskmanager:availabilityView')
+        return redirect('taskmanager:availability-add')
+
+class AvailabilitiesView(LoginRequiredMixin, generic.ListView):
+    template_name = 'taskmanager/availabilitiesView.html'
+    context_object_name = 'availability_list'
+    login_url = '/login/'
+
+    def get_queryset(self):
+        return Availability.objects.filter(user=self.request.user).order_by('day', 'startingTime')
+
+class AvailabilitiesDetailView(generic.DetailView):
+    model = Availability
+    template_name = 'taskmanager/availabilitiesDetails.html'
+    context_object_name = "availability"
+
+class DeleteAvailabilities(DeleteView):
+    model = Availability
+    success_url = reverse_lazy('taskmanager:availabilityView')  # This is where this view will redirect the user
+    template_name = 'delete_confirm.html'
+    context_object_name = "object"
+###########################################
 
 
 ######### Tasktype ########

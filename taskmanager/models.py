@@ -64,3 +64,5 @@ class Availability(models.Model):
     priority = models.IntegerField(default=1)
 
     def __str__(self): return self.task.name + ' - ' + self.day.name
+    def get_absolute_url(self):
+        return reverse('taskmanager:availabilityDetails', kwargs={'pk': self.pk})

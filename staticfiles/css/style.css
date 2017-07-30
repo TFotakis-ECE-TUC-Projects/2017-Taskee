@@ -1,5 +1,5 @@
 body{
-    background-color: white;
+    background: white url("images/gbackground.png");
 }
 .navbar{
     border-radius: 0;

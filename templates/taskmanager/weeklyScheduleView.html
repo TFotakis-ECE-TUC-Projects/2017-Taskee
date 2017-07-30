@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
-{% block title %}Home - {% endblock %}
+{% block title %}Weekly Schedule {% endblock %}
 {% block weeklyScheduleView %}active{% endblock %}
 {% block body %}
-    <h1>Weekly Schedule</h1>
+    <h2>Weekly Schedule</h2>
     <ul>
         {% for weeklySchedule in weeklySchedule_list %}
             <li><a href="{% url 'taskmanager:weeklyScheduleDetails' weeklySchedule.id %}">{{ weeklySchedule.task.name }}
