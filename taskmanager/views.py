@@ -4,8 +4,8 @@ from django.shortcuts import redirect
 from django.views import generic
 from django.views.generic.edit import CreateView, DeleteView
 
-from .models import Task, WeeklySchedule, Availability, TaskType
 from .forms import TaskForm, WeeklyScheduleForm, AvailabilityForm
+from .models import Availability, TaskType
 from .models import Task, WeeklySchedule
 
 
@@ -54,6 +54,7 @@ class DeleteTask(DeleteView):
     success_url = reverse_lazy('taskmanager:taskView')  # This is where this view will redirect the user
     template_name = 'delete_confirm.html'
 
+
 ######### WeeklySchedule ###########
 
 class CreateWeeklySchedule(CreateView):
@@ -100,7 +101,6 @@ class DeleteWeeklySchedule(DeleteView):
     context_object_name = "object"
 
 
-
 ########## Availability ###################
 
 class CreateAvailability(CreateView):
@@ -120,6 +120,7 @@ class CreateAvailability(CreateView):
             availability.priority = form.cleaned_data['priority']
             availability.save()
             return redirect('taskmanager:availabilityView')
+        return redirect('taskmanager:availability-add')
 
 
 class AvailabilitiesView(LoginRequiredMixin, generic.ListView):
@@ -130,16 +131,20 @@ class AvailabilitiesView(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         return Availability.objects.filter(user=self.request.user).order_by('day', 'startingTime')
 
+
 class AvailabilitiesDetailView(generic.DetailView):
     model = Availability
     template_name = 'taskmanager/availabilitiesDetails.html'
     context_object_name = "availability"
+
 
 class DeleteAvailabilities(DeleteView):
     model = Availability
     success_url = reverse_lazy('taskmanager:availabilityView')  # This is where this view will redirect the user
     template_name = 'delete_confirm.html'
     context_object_name = "object"
+
+
 ###########################################
 
 
@@ -148,7 +153,6 @@ class DeleteAvailabilities(DeleteView):
 class CreateTaskType(CreateView):
     model = TaskType
     fields = ['name']
-
 
 
 class TaskTypeView(LoginRequiredMixin, generic.ListView):
@@ -167,7 +171,6 @@ class DeleteTaskType(DeleteView):
     success_url = reverse_lazy('taskmanager:taskTypeView')  # This is where this view will redirect the user
     template_name = 'delete_confirm.html'
     context_object_name = "object"
-
 
 
 class TaskTypeDetailView(generic.DetailView):

@@ -51,7 +51,7 @@ class WeeklySchedule(models.Model):
     def __str__(self): return self.task.name + ' - ' + self.day.name + ' ' + str(self.startingTime)
 
     def get_absolute_url(self):
-        return reverse('taskmanager:weeklyScheduleDetails', kwargs={'pk': self.pk})
+        return reverse('taskmanager:weeklyScheduleDetail', kwargs={'pk': self.pk})
 
 
 class Availability(models.Model):
