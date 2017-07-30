@@ -116,7 +116,7 @@ class CreateAvailability(CreateView):
             availability.instanceId = form.cleaned_data['instanceId']
             availability.day = form.cleaned_data['day']
             availability.startingTime = form.cleaned_data['startingTime']
-            availability.endingTime = form.cleaned_data['duration']
+            availability.endingTime = form.cleaned_data['endingTime']
             availability.priority = form.cleaned_data['priority']
             availability.save()
             return redirect('taskmanager:availabilityView')
