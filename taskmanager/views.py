@@ -76,22 +76,41 @@ class CreateWeeklySchedule(LoginRequiredMixin, CreateView):
             weeklySchedule.startingTime = form.cleaned_data['startingTime']
             weeklySchedule.duration = form.cleaned_data['duration']
             weeklySchedule.canMove = form.cleaned_data['canMove']
-            weeklySchedule.valid = form.cleaned_data['valid']
-            #weeklySchedule.save()
+            weeklySchedule.valid = not weeklySchedule.canMove
+            # weeklySchedule.save()
 
             ws_list = WeeklySchedule.objects.all()
             critical_day = weeklySchedule.day
             critical_startime = weeklySchedule.startingTime
             critical_endingtime = weeklySchedule.endingTime
 
-            for ws in ws_list: #tha kanei redirect eite sto view me air message success eite .delete(self,elpizontas)
-                 if(weeklySchedule.canMove==False):## ... na to doume me to availability
-                    ws_endingtime = ws.endingTime
-                    if ((ws.day == critical_day)&(((ws.startingTime<=critical_startime)&(ws_endingtime>critical_startime))|((critical_startime<=ws.startingTime)&(critical_endingtime>ws.startingTime)))): #an ginoun touta ola, DEN tha kaneis save!
-                        return redirect('taskmanager:weeklyScheduleView')## na baloume error message
+            for ws in ws_list:  # tha kanei redirect eite sto view me air message success eite .delete(self,elpizontas)
+                if not weeklySchedule.canMove:  # Todo na to doume me to availability
+                    sameDay = ws.day == critical_day
+                    wholeTaken = (ws.startingTime <= critical_startime) & (critical_endingtime <= ws.endingTime)  # [()]
+                    partlyTaken = (critical_startime <= ws.startingTime) & (
+                    ws.startingTime <= critical_endingtime)  # ([])
+                    secondHalfTaken = (critical_startime <= ws.startingTime) & (critical_endingtime < ws.endingTime) & (
+                    critical_endingtime <= ws.startingTime)  # ([)]
+                    firstHalfTaken = (ws.startingTime <= critical_startime) & (critical_startime < ws.endingTime) & (
+                    ws.endingTime <= critical_endingtime)  # [(])
+                    if sameDay & (wholeTaken | secondHalfTaken | firstHalfTaken | partlyTaken):
+                        return render(request=request, template_name='taskmanager/weeklyschedule_form.html', context={
+                            'errorMessage': 'The schedule you are trying to create conflicts with: ' + str(ws)})
+                        # TODO: Comment cleanup
+                        # return redirect('taskmanager:weeklyScheduleView')  # na baloume error message
+                        # ws_endingtime = ws.endingTime
+                        # if ((ws.day == critical_day) & (
+                        #             ((ws.startingTime <= critical_startime) & (ws.endingTime > critical_startime)) | (
+                        #                     (critical_startime <= ws.startingTime) & (
+                        #                     critical_endingtime > ws.startingTime)))):  # an ginoun touta ola, DEN tha kaneis save!
+                        #     return redirect('taskmanager:weeklyScheduleView')  # na baloume error message
             weeklySchedule.save()
-            return redirect('taskmanager:weeklyScheduleView')  ## na baloume success message
-        return redirect('taskmanager:weeklySchedule-add')
+            return redirect('taskmanager:weeklyScheduleView')  # Todo na baloume success message
+        # return redirect('taskmanager:weeklySchedule-add')
+        return render(request=request, template_name='taskmanager/weeklyScheduleView.html',
+                      context={'errorMessage': 'The form is not valid'})
+
 
 class WeeklyScheduleView(LoginRequiredMixin, generic.ListView):
     template_name = 'taskmanager/weeklyScheduleView.html'

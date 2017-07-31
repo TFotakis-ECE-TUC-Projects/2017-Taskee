@@ -3,7 +3,6 @@ from django import forms
 from .models import Task, WeeklySchedule, Availability
 
 
-
 class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
@@ -13,7 +12,7 @@ class TaskForm(forms.ModelForm):
 class WeeklyScheduleForm(forms.ModelForm):
     class Meta:
         model = WeeklySchedule
-        fields = ['task', 'instanceId', 'day', 'startingTime', 'duration', 'canMove', 'valid']
+        fields = ['task', 'instanceId', 'day', 'startingTime', 'duration', 'canMove']
 
 
 class AvailabilityForm(forms.ModelForm):

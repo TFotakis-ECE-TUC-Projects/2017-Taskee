@@ -7,6 +7,9 @@
             <div class="col-sm-12 col-md-7">
                 <div class="panel panel-default">
                     <div class="panel-body">
+                        {% if errorMessage %}
+                            <p><strong class="text-danger">{{ errorMessage }}</strong></p>
+                        {% endif %}
                         <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
                             {% csrf_token %}
                             {% include 'form_template.html' %}
