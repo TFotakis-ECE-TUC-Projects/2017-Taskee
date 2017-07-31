@@ -1,3 +1,5 @@
+from datetime import datetime, date
+
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db import models
@@ -48,7 +50,7 @@ class WeeklySchedule(models.Model):
     instanceId = models.IntegerField(default=1)
     day = models.ForeignKey(Day, on_delete=models.CASCADE, default=1)
     startingTime = models.TimeField()
-    duration = models.TimeField()
+    duration = models.DurationField()
     canMove = models.BooleanField(default=False)
     valid = models.BooleanField(default=False)
 
@@ -56,6 +58,10 @@ class WeeklySchedule(models.Model):
 
     def get_absolute_url(self):
         return reverse('taskmanager:weeklyScheduleDetail', kwargs={'pk': self.pk})
+
+    @property
+    def endingTime(self):
+        return (datetime.combine(date.today(), self.startingTime) + self.duration).time()
 
 
 class Availability(models.Model):
