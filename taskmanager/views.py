@@ -77,10 +77,21 @@ class CreateWeeklySchedule(LoginRequiredMixin, CreateView):
             weeklySchedule.duration = form.cleaned_data['duration']
             weeklySchedule.canMove = form.cleaned_data['canMove']
             weeklySchedule.valid = form.cleaned_data['valid']
-            weeklySchedule.save()
-            return redirect('taskmanager:weeklyScheduleView')
-        return redirect('taskmanager:weeklySchedule-add')
+            #weeklySchedule.save()
 
+            ws_list = WeeklySchedule.objects.all()
+            critical_day = weeklySchedule.day
+            critical_startime = weeklySchedule.startingTime
+            critical_endingtime = weeklySchedule.endingTime
+
+            for ws in ws_list: #tha kanei redirect eite sto view me air message success eite .delete(self,elpizontas)
+                 if(weeklySchedule.canMove==False):## ... na to doume me to availability
+                    ws_endingtime = ws.endingTime
+                    if ((ws.day == critical_day)&(((ws.startingTime<=critical_startime)&(ws_endingtime>critical_startime))|((critical_startime<=ws.startingTime)&(critical_endingtime>ws.startingTime)))): #an ginoun touta ola, DEN tha kaneis save!
+                        return redirect('taskmanager:weeklyScheduleView')## na baloume error message
+            weeklySchedule.save()
+            return redirect('taskmanager:weeklyScheduleView')  ## na baloume success message
+        return redirect('taskmanager:weeklySchedule-add')
 
 class WeeklyScheduleView(LoginRequiredMixin, generic.ListView):
     template_name = 'taskmanager/weeklyScheduleView.html'
