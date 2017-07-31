@@ -95,8 +95,11 @@ class CreateWeeklySchedule(LoginRequiredMixin, CreateView):
                     firstHalfTaken = (ws.startingTime <= critical_startime) & (critical_startime < ws.endingTime) & (
                     ws.endingTime <= critical_endingtime)  # [(])
                     if sameDay & (wholeTaken | secondHalfTaken | firstHalfTaken | partlyTaken):
-                        return render(request=request, template_name='taskmanager/weeklyschedule_form.html', context={
-                            'errorMessage': 'The schedule you are trying to create conflicts with: ' + str(ws)})
+                        return render(request=request,
+                                      template_name='taskmanager/weeklyschedule_form.html',
+                                      context={
+                                          'errorMessage': 'The schedule you are trying to create conflicts with: ' + str(
+                                              ws)})
                         # TODO: Comment cleanup
                         # return redirect('taskmanager:weeklyScheduleView')  # na baloume error message
                         # ws_endingtime = ws.endingTime
@@ -108,7 +111,7 @@ class CreateWeeklySchedule(LoginRequiredMixin, CreateView):
             weeklySchedule.save()
             return redirect('taskmanager:weeklyScheduleView')  # Todo na baloume success message
         # return redirect('taskmanager:weeklySchedule-add')
-        return render(request=request, template_name='taskmanager/weeklyScheduleView.html',
+        return render(request=request, template_name='taskmanager/weeklyschedule_form.html',
                       context={'errorMessage': 'The form is not valid'})
 
 
