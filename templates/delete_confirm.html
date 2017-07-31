@@ -4,6 +4,6 @@
     <h2>Hey, are you sure you want to delete {{ object.name }}?</h2>
     <form method="post">
         {% csrf_token %}
-        <button type="submit" class="btn btn-danger">Yes, I'm sure.</button>
+        <button class="btn btn-danger">Yes, I'm sure.</button>
     </form>
 {% endblock %}

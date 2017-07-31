@@ -1,12 +1,11 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse_lazy
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.views import generic
 from django.views.generic.edit import CreateView, DeleteView
-from django.views.generic.edit import UpdateView
 
 from .forms import TaskForm, WeeklyScheduleForm, AvailabilityForm
-from .models import Task, WeeklySchedule, TaskTypeWeight, Availability, TaskType
+from .models import Task, WeeklySchedule, TaskTypeWeight, Availability
 
 LOGIN_URL = '/login/'
 
@@ -154,38 +153,55 @@ class DeleteAvailabilities(LoginRequiredMixin, DeleteView):
 
 
 ######### Tasktype ########
-class CreateTaskType(LoginRequiredMixin, CreateView):
-    model = TaskType
-    fields = ['name']
-    login_url = LOGIN_URL
-
-
-class TaskTypeView(LoginRequiredMixin, generic.ListView):
-    model = TaskTypeWeight
+def taskTypeView(request):
+    tasks = TaskTypeWeight.objects.filter(user=request.user).order_by('-weight')
     template_name = 'taskmanager/taskTypeView.html'
-    context_object_name = 'taskList'
-    login_url = LOGIN_URL
+    return render(request=request, template_name=template_name, context={'taskList': tasks})
+    # context_object_name = 'taskList'
+    # login_url = LOGIN_URL
 
 
-class DeleteTaskType(LoginRequiredMixin, DeleteView):
-    model = TaskType
-    success_url = reverse_lazy('taskmanager:taskTypeView')  # This is where this view will redirect the user
-    template_name = 'delete_confirm.html'
-    context_object_name = "object"
+def taskTypeWeightUpdate(request):
+    tasks = TaskTypeWeight.objects.filter(user=request.user)
+    for task in tasks:
+        try:
+            weight = request.POST[str(task.id)]
+        except:
+            return render(request, 'taskmanager/taskTypeView.html',
+                          {"errorMessage": "An error occured. Please try again"})
+        else:
+            tmpTask = TaskTypeWeight.objects.filter(pk=task.id).get()
+            tmpTask.weight = weight
+            tmpTask.save()
+    return redirect('taskmanager:taskTypeView')
 
 
-class TaskTypeDetailView(LoginRequiredMixin, generic.DetailView):
-    model = TaskTypeWeight
-    template_name = 'taskmanager/taskTypeDetails.html'
-    context_object_name = 'taskTypeWeight'
-    login_url = LOGIN_URL
+# TODO Comments Cleanup
+# class CreateTaskType(LoginRequiredMixin, CreateView):
+#     model = TaskType
+#     fields = ['name']
+#     login_url = LOGIN_URL
+
+
+# class DeleteTaskType(LoginRequiredMixin, DeleteView):
+#     model = TaskType
+#     success_url = reverse_lazy('taskmanager:taskTypeView')  # This is where this view will redirect the user
+#     template_name = 'delete_confirm.html'
+#     context_object_name = "object"
+
+
+# class TaskTypeDetailView(LoginRequiredMixin, generic.DetailView):
+#     model = TaskTypeWeight
+#     template_name = 'taskmanager/taskTypeDetails.html'
+#     context_object_name = 'taskTypeWeight'
+#     login_url = LOGIN_URL
 
 
 ########### TaskType weight ##########
-class TaskTypeWeightUpdate(LoginRequiredMixin, UpdateView):
-    model = TaskTypeWeight
-    fields = ['user', 'taskType', 'weight']
-    login_url = LOGIN_URL
+# class TaskTypeWeightUpdate(LoginRequiredMixin, UpdateView):
+#     model = TaskTypeWeight
+#     fields = ['user', 'taskType', 'weight']
+#     login_url = LOGIN_URL
 
 
 class ShowDetails(LoginRequiredMixin, generic.ListView):

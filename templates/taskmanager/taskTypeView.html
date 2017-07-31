@@ -1,25 +1,38 @@
 {% extends 'base.html' %}
 {% block title %}Task Types{% endblock %}
 {% block body %}
-    <form method="post">
+    {% if errorMessage %}
+        <div class="row">
+            <div class="col-lg-8 col-offset-2 center-block">
+                <p><strong class="text-danger">{{ errorMessage }}</strong></p>
+            </div>
+        </div>
+    {% endif %}
+    <form action="{% url 'taskmanager:taskTypeUpdate' %}" method="post">
         {% csrf_token %}
         <div class="form-group col-lg-2 col-lg-offset-5">
+            <div class="row">
+                <div class="col-lg-6 text-right">
+                    <h3 class="text-center">Task Types</h3>
+                </div>
+                <div class="col-lg-6">
+                    <h3 class="text-center">Task Type Weights</h3>
+                </div>
+            </div>
             {% for task in taskList %}
-                {% if request.user == task.user %}
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <label>{{ task.taskType }}</label>
+                <div class="row">
+                    <div class="col-lg-6 text-right">
+                        <label for="{{ task.pk }}">{{ task.taskType }}</label>
                         </div>
                         <div class="col-lg-6">
-                            <input type="number" id="{{ task.pk }}" value="{{ task.weight }}">
+                            <input type="number" id="{{ task.pk }}" name="{{ task.pk }}" value="{{ task.weight }}">
                         </div>
                     </div>
-                {% endif %}
             {% endfor %}
             <br>
             <div class="row">
-                <div class="col-lg-2">
-                    <button class="btn btn-success" type="submit">Save</button>
+                <div class="col-lg-6 col-lg-offset-3">
+                    <button class="btn btn-block btn-success">Save</button>
                 </div>
             </div>
         </div>

@@ -22,10 +22,13 @@ urlpatterns = [
     url(r'^addavailabilities/$', views.CreateAvailability.as_view(), name='availability-add'),
     url(r'^availabilities/(?P<pk>[0-9]+)/delete$', views.DeleteAvailabilities.as_view(), name='availabilityDelete'),
 
-    url(r'addTaskType/$', views.CreateTaskType.as_view(), name='taskType-add'),
-    url(r'^taskType/$', views.TaskTypeView.as_view(), name='taskTypeView'),
-    url(r'^taskType/(?P<pk>[0-9]+)/$', views.TaskTypeDetailView.as_view(), name='taskTypeDetail'),
-    url(r'^taskType/(?P<pk>\d+)/delete/$', views.DeleteTaskType.as_view(), name='taskTypeDelete'),
+    # url(r'^taskType/$', views.TaskTypeView.as_view(), name='taskTypeView'),
+    url(r'^taskType/$', views.taskTypeView, name='taskTypeView'),
+    url(r'^taskType/update$', views.taskTypeWeightUpdate, name='taskTypeUpdate'),
+    # url(r'addTaskType/$', views.CreateTaskType.as_view(), name='taskType-add'),
+    # url(r'^taskType/(?P<pk>[0-9]+)/$', views.TaskTypeDetailView.as_view(), name='taskTypeDetail'),
+    # url(r'^taskType/(?P<pk>\d+)/delete/$', views.DeleteTaskType.as_view(), name='taskTypeDelete'),
+    # url(r'^taskTypeUpdate/(?P<pk>[0-9]+)/$', views.TaskTypeWeightUpdate.as_view(), name='taskTypeUpdate'),
 
     # url(r'addTaskTypeWeight/$', views.CreateTaskTypeWeight.as_view(), name='taskTypeWeight-add'),
     # url(r'^taskTypeWeight/$', views.TaskTypeWeightView.as_view(), name='taskTypeWeightUpdate'),
@@ -33,5 +36,4 @@ urlpatterns = [
     url(r'showdetails/$', views.ShowDetails.as_view(), name='showdetails'),
 
 
-    url(r'^taskTypeUpdate/(?P<pk>[0-9]+)/$', views.TaskTypeWeightUpdate.as_view(), name='taskTypeUpdate'),
 ]

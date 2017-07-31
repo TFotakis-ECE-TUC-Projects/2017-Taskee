@@ -18,7 +18,7 @@ class TaskTypeWeight(models.Model):
     weight = models.IntegerField(default=1)
 
     def get_absolute_url(self):
-        return reverse('taskmanager:taskTypeView')#, kwargs={'pk': self.pk})
+        return reverse('taskmanager:taskTypeView')  # , kwargs={'pk': self.pk})
 
     def __str__(self): return self.taskType.name
 

@@ -15,23 +15,23 @@
                         <ul class="nav navbar-nav">
                             <li class="{% block weeklyScheduleView %}{% endblock %}">
                                 <a href="{% url 'taskmanager:weeklyScheduleView' %}">
-                                    <span class="glyphicon glyphicon-book" aria-hidden="true"></span>&nbsp;Weekly
+                                    <span class="glyphicon glyphicon-book"></span>&nbsp;Weekly
                                     Schedules
                                 </a>
                             </li>
                             <li class="{% block taskView %}{% endblock %}">
                                 <a href="{% url 'taskmanager:taskView' %}">
-                                    <span class="glyphicon glyphicon-check" aria-hidden="true"></span>&nbsp;Tasks
+                                    <span class="glyphicon glyphicon-check"></span>&nbsp;Tasks
                                 </a>
                             </li>
                             <li class="{% block availabilitiesView %}{% endblock %}">
                                 <a href="{% url 'taskmanager:availabilityView' %}">
-                                    <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>&nbsp;Availabilities
+                                    <span class="glyphicon glyphicon-calendar"></span>&nbsp;Availabilities
                                 </a>
                             </li>
                            <li class="{% block taskTypeView %}{% endblock %}">
                                 <a href="{% url 'taskmanager:taskTypeView' %}">
-                                    <span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>&nbsp;Task Types
+                                    <span class="glyphicon glyphicon-tasks"></span>&nbsp;Task Types
                                 </a>
                             </li>
 {#                            <li class="{% block taskTypeWeightView %}{% endblock %}">#}
@@ -51,7 +51,7 @@
                 {% if user.is_authenticated %}
                     <li class="{% block logoutActive %}{% endblock %}">
                         <a href="{% url 'login:logout' %}">
-                            <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>&nbsp;Logout
+                            <span class="glyphicon glyphicon-log-out"></span>&nbsp;Logout
                         </a>
                     </li>
                 {% endif %}
