@@ -88,18 +88,13 @@ class CreateWeeklySchedule(LoginRequiredMixin, CreateView):
                 if not weeklySchedule.canMove:  # Todo na to doume me to availability
                     sameDay = ws.day == critical_day
                     wholeTaken = (ws.startingTime <= critical_startime) & (critical_endingtime <= ws.endingTime)  # [()]
-                    partlyTaken = (critical_startime <= ws.startingTime) & (
-                    ws.startingTime <= critical_endingtime)  # ([])
-                    secondHalfTaken = (critical_startime <= ws.startingTime) & (critical_endingtime < ws.endingTime) & (
-                    critical_endingtime <= ws.startingTime)  # ([)]
-                    firstHalfTaken = (ws.startingTime <= critical_startime) & (critical_startime < ws.endingTime) & (
-                    ws.endingTime <= critical_endingtime)  # [(])
+                    partlyTaken = (critical_startime <= ws.startingTime) & (ws.startingTime <= critical_endingtime)  # ([])
+                    secondHalfTaken = (critical_startime <= ws.startingTime) & (critical_endingtime < ws.endingTime) & (critical_endingtime <= ws.startingTime)  # ([)]
+                    firstHalfTaken = (ws.startingTime <= critical_startime) & (critical_startime < ws.endingTime) & (ws.endingTime <= critical_endingtime)  # [(])
                     if sameDay & (wholeTaken | secondHalfTaken | firstHalfTaken | partlyTaken):
                         return render(request=request,
                                       template_name='taskmanager/weeklyschedule_form.html',
-                                      context={
-                                          'errorMessage': 'The schedule you are trying to create conflicts with: ' + str(
-                                              ws)})
+                                      context={'errorMessage': 'The schedule you are trying to create conflicts with: ' + str(ws)})
                         # TODO: Comment cleanup
                         # return redirect('taskmanager:weeklyScheduleView')  # na baloume error message
                         # ws_endingtime = ws.endingTime
@@ -111,8 +106,7 @@ class CreateWeeklySchedule(LoginRequiredMixin, CreateView):
             weeklySchedule.save()
             return redirect('taskmanager:weeklyScheduleView')  # Todo na baloume success message
         # return redirect('taskmanager:weeklySchedule-add')
-        return render(request=request, template_name='taskmanager/weeklyschedule_form.html',
-                      context={'errorMessage': 'The form is not valid'})
+        return render(request=request, template_name='taskmanager/weeklyschedule_form.html', context={'errorMessage': 'The form is not valid'})
 
 
 class WeeklyScheduleView(LoginRequiredMixin, generic.ListView):
