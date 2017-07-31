@@ -1,68 +1,45 @@
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
-        {#        Logo#}
+        <div class="navbar-header">
+            <a class="navbar-brand" href="{% url 'taskmanager:index' %}">Taskee</a>
+        </div>
         {% if user.is_authenticated %}
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#topNavBar">
                 <span class="glyphicon glyphicon-menu-hamburger" style="color: white"></span>
             </button>
-        {% endif %}
-        <div class="navbar-header">
-            <a class="navbar-brand" href="{% url 'taskmanager:index' %}">Taskee</a>
-        </div>
-
-        {#        Items#}
-        <div class="collapse navbar-collapse" id="topNavBar">
-                        <ul class="nav navbar-nav">
-                            <li class="{% block weeklyScheduleView %}{% endblock %}">
-                                <a href="{% url 'taskmanager:weeklyScheduleView' %}">
-                                    <span class="glyphicon glyphicon-book"></span>&nbsp;Weekly
-                                    Schedules
-                                </a>
-                            </li>
-                            <li class="{% block taskView %}{% endblock %}">
-                                <a href="{% url 'taskmanager:taskView' %}">
-                                    <span class="glyphicon glyphicon-check"></span>&nbsp;Tasks
-                                </a>
-                            </li>
-                            <li class="{% block availabilitiesView %}{% endblock %}">
-                                <a href="{% url 'taskmanager:availabilityView' %}">
-                                    <span class="glyphicon glyphicon-calendar"></span>&nbsp;Availabilities
-                                </a>
-                            </li>
-                           <li class="{% block taskTypeView %}{% endblock %}">
-                                <a href="{% url 'taskmanager:taskTypeView' %}">
-                                    <span class="glyphicon glyphicon-tasks"></span>&nbsp;Task Types
-                                </a>
-                            </li>
-{#                            <li class="{% block taskTypeWeightView %}{% endblock %}">#}
-{#                                <a href="{% url 'taskmanager:taskTypeWeightUpdate' %}">#}
-{#                                    <span class="glyphicon glyphicon-scale" aria-hidden="true"></span>&nbsp;Task Types#}
-{#                                    Weights#}
-{#                                </a>#}
-{#                            </li>#}
-                        </ul>
-
-            <ul class="nav navbar-nav navbar-right">
-                {#                <li class="{% block addAlbumActive %}{% endblock %}">#}
-                {#                    <a href="#">#}
-                {#                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;Add Album#}
-                {#                    </a>#}
-                {#                </li>#}
-                {% if user.is_authenticated %}
+            {#        Items#}
+            <div class="collapse navbar-collapse" id="topNavBar">
+                <ul class="nav navbar-nav">
+                    <li class="{% block weeklyScheduleView %}{% endblock %}">
+                        <a href="{% url 'taskmanager:weeklyScheduleView' %}">
+                            <span class="glyphicon glyphicon-book"></span>&nbsp;Weekly
+                            Schedules
+                        </a>
+                    </li>
+                    <li class="{% block taskView %}{% endblock %}">
+                        <a href="{% url 'taskmanager:taskView' %}">
+                            <span class="glyphicon glyphicon-check"></span>&nbsp;Tasks
+                        </a>
+                    </li>
+                    <li class="{% block availabilitiesView %}{% endblock %}">
+                        <a href="{% url 'taskmanager:availabilityView' %}">
+                            <span class="glyphicon glyphicon-calendar"></span>&nbsp;Availabilities
+                        </a>
+                    </li>
+                    <li class="{% block taskTypeView %}{% endblock %}">
+                        <a href="{% url 'taskmanager:taskTypeView' %}">
+                            <span class="glyphicon glyphicon-tasks"></span>&nbsp;Task Types
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
                     <li class="{% block logoutActive %}{% endblock %}">
                         <a href="{% url 'login:logout' %}">
                             <span class="glyphicon glyphicon-log-out"></span>&nbsp;Logout
                         </a>
                     </li>
-                {% endif %}
-            </ul>
-
-                    {#      <form class="navbar-form" role="search" method="get" action="#">#}
-                    {#         <div class="form-group">#}
-                     {#            <input type="text" class="form-control" name="q" value="" title="Search">#}
-                     {#        </div> #}
-                    {#         <button type="submit" class="btn btn-default">Search</button>#}
-                     {#    </form>#}
-        </div>
+                </ul>
+            </div>
+        {% endif %}
     </div>
 </nav>
