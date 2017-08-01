@@ -5,7 +5,7 @@ from django.views import generic
 from django.views.generic.edit import CreateView, DeleteView
 
 from .forms import TaskForm, WeeklyScheduleForm, AvailabilityForm
-from .models import Task, WeeklySchedule, TaskTypeWeight, Availability
+from .models import Task, WeeklySchedule, TaskTypeWeight, Availability, Day
 
 LOGIN_URL = '/login/'
 
@@ -79,19 +79,55 @@ class CreateWeeklySchedule(LoginRequiredMixin, CreateView):
             weeklySchedule.valid = not weeklySchedule.canMove
             # weeklySchedule.save()
 
+            transicion1=False
+            transicion2 = False
             ws_list = WeeklySchedule.objects.all()
             critical_day = weeklySchedule.day
             critical_startime = weeklySchedule.startingTime
             critical_endingtime = weeklySchedule.endingTime
 
+            if critical_endingtime < critical_startime : #exoume transicion hmeras (Monday -> Tuesday)
+                critical_end_day = Day.objects.get(id=weeklySchedule.day_id +1)
+                transicion1=True
+            else:
+                critical_end_day=critical_day
+
+
+
+
+
             for ws in ws_list:  # tha kanei redirect eite sto view me air message success eite .delete(self,elpizontas)
                 if not weeklySchedule.canMove:  # Todo na to doume me to availability
+                    if ws.endingTime < ws.startingTime:  # exoume transicion hmeras (Monday -> Tuesday)
+                        ws_end_day = Day.objects.get(id=ws.day_id + 1)
+                        transicion2=True
+                    else:
+                        ws_end_day = ws.day
                     sameDay = ws.day == critical_day
-                    wholeTaken = (ws.startingTime <= critical_startime) & (critical_endingtime <= ws.endingTime)  # [()]
-                    partlyTaken = (critical_startime <= ws.startingTime) & (ws.endingTime <= critical_endingtime)  # ([])
-                    secondHalfTaken = (critical_startime <= ws.startingTime) & (critical_endingtime > ws.startingTime) & (critical_endingtime <= ws.startingTime)  # ([)]
-                    firstHalfTaken = (ws.startingTime <= critical_startime) & (critical_startime < ws.endingTime) & (ws.endingTime <= critical_endingtime)  # [(])
-                    if sameDay & (wholeTaken | secondHalfTaken | firstHalfTaken | partlyTaken):
+                    almost_sameDay1= critical_end_day == ws.day
+                    almost_sameDay2= ws_end_day == critical_day
+
+                    check_days = sameDay | almost_sameDay1 | almost_sameDay2
+
+                    # wholeTaken = (ws.startingTime <= critical_startime) & (critical_endingtime <= ws.endingTime)  # [()]
+                    # partlyTaken = (critical_startime <= ws.startingTime) & (ws.endingTime <= critical_endingtime)  # ([])
+                    if (transicion1 == True) & (transicion2 == True):
+                        return render(request=request,
+                                      template_name='taskmanager/weeklyschedule_form.html',
+                                      context={
+                                          'errorMessage': 'The schedule you are trying to create conflicts with: ' + str(
+                                              ws)})
+                    if(transicion1):
+                        secondHalfTaken = (critical_startime <= ws.endingTime) | (critical_endingtime > ws.startingTime)# & (critical_endingtime <= ws.startingTime)
+                    else:
+                         secondHalfTaken = (critical_startime <= ws.startingTime) & (critical_endingtime > ws.startingTime) & (critical_endingtime <= ws.startingTime)  # ([)]
+
+                    if(transicion2):
+                        firstHalfTaken = (critical_startime < ws.endingTime) | (critical_endingtime > ws.startingTime)  #& (ws.endingTime <= critical_endingtime)
+                    else:
+                        firstHalfTaken = (ws.startingTime <= critical_startime) & (critical_startime < ws.endingTime) & (ws.endingTime <= critical_endingtime)  # [(])
+
+                    if check_days & (  secondHalfTaken | firstHalfTaken ): # wholeTaken |  | partlyTaken
                         return render(request=request,
                                       template_name='taskmanager/weeklyschedule_form.html',
                                       context={'errorMessage': 'The schedule you are trying to create conflicts with: ' + str(ws)})
