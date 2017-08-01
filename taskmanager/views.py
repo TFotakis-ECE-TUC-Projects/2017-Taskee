@@ -102,6 +102,7 @@ class CreateWeeklySchedule(LoginRequiredMixin, CreateView):
                         ws_end_day = Day.objects.get(id=ws.day_id + 1)
                         transicion2=True
                     else:
+                        transicion2=False
                         ws_end_day = ws.day
                     sameDay = ws.day == critical_day
                     almost_sameDay1= critical_end_day == ws.day
@@ -117,12 +118,12 @@ class CreateWeeklySchedule(LoginRequiredMixin, CreateView):
                                       context={
                                           'errorMessage': 'The schedule you are trying to create conflicts with: ' + str(
                                               ws)})
-                    if(transicion1):
-                        secondHalfTaken = (critical_startime <= ws.endingTime) | (critical_endingtime > ws.startingTime)# & (critical_endingtime <= ws.startingTime)
+                    if(transicion1 &(not((critical_startime >= ws.endingTime) & (critical_endingtime <= ws.startingTime)))):
+                        secondHalfTaken = (critical_startime < ws.endingTime) | (critical_endingtime > ws.startingTime)# & (critical_endingtime <= ws.startingTime)
                     else:
                          secondHalfTaken = (critical_startime <= ws.startingTime) & (critical_endingtime > ws.startingTime) & (critical_endingtime <= ws.startingTime)  # ([)]
 
-                    if(transicion2):
+                    if(transicion2 & (not((critical_startime >= ws.endingTime) & (critical_endingtime <= ws.startingTime)))):
                         firstHalfTaken = (critical_startime < ws.endingTime) | (critical_endingtime > ws.startingTime)  #& (ws.endingTime <= critical_endingtime)
                     else:
                         firstHalfTaken = (ws.startingTime <= critical_startime) & (critical_startime < ws.endingTime) & (ws.endingTime <= critical_endingtime)  # [(])
