@@ -72,22 +72,8 @@ class CreateWeeklySchedule(LoginRequiredMixin, CreateView):
             critical.duration = form.cleaned_data['duration']
             critical.canMove = form.cleaned_data['canMove']
             critical.valid = not critical.canMove
-            # critical.save()
-            # transicion1 = False
-            # transicion2 = False
-            # critical_day = critical.day
-            # critical_startime = critical.startingTime
-            # critical_endingtime = critical.endingTime
-            # if critical_endingtime < critical_startime:  # exoume transicion hmeras (Monday -> Tuesday)
-            #     critical_end_day = Day.objects.get(id=critical.day_id + 1)
-            #     transicion1 = True
-            # else:
-            #     critical_end_day = critical_day
             ws_list = WeeklySchedule.objects.filter(user=request.user)
             for ws in ws_list:  # tha kanei redirect eite sto view me air message success eite .delete(self,elpizontas)
-                # if not critical.canMove:  # Todo na to doume me to availability
-                # Conflict check # Todo comment cleanup
-                # original codeat calculator
                 if hasConflict(critical, ws):
                     if critical.canMove:
                         critical.save()
@@ -171,8 +157,8 @@ def taskTypeWeightUpdate(request):
         try:
             weight = request.POST[str(task.id)]
         except:
-            return render(request, 'taskmanager/taskTypeView.html',
-                          {"errorMessage": "An error occured. Please try again"})
+	        return render(request, 'errorView.html',
+	                      {"errorMessage": "An error occured. Please try again"})
         else:
             tmpTask = TaskTypeWeight.objects.filter(pk=task.id).get()
             tmpTask.weight = weight

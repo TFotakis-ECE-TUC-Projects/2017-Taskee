@@ -70,10 +70,14 @@ class Availability(models.Model):
     instanceId = models.IntegerField(default=1)
     day = models.ForeignKey(Day, on_delete=models.CASCADE, default=1)
     startingTime = models.TimeField()
-    endingTime = models.TimeField()
+    endingAvailableTime = models.TimeField()
     priority = models.IntegerField(default=1)
 
     def __str__(self): return self.task.name + ' - ' + self.day.name
 
     def get_absolute_url(self):
         return reverse('taskmanager:availabilityDetails', kwargs={'pk': self.pk})
+
+    @property
+    def endingTime(self):
+	    return (datetime.combine(date.today(), self.startingTime) + WeeklySchedule.objects.filter(user=self.user, task=self.task, instanceId=self.instanceId).get().duration).time()

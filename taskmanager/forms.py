@@ -66,7 +66,7 @@ class AvailabilityForm(forms.ModelForm):
         self.fields['startingTime'].widget.attrs = {
             'class': 'form-control'
         }
-        self.fields['endingTime'].widget.attrs = {
+        self.fields['endingAvailableTime'].widget.attrs = {
             'class': 'form-control'
         }
         self.fields['priority'].widget.attrs = {
@@ -75,4 +75,4 @@ class AvailabilityForm(forms.ModelForm):
 
     class Meta:
         model = Availability
-        fields = ['task', 'instanceId', 'day', 'startingTime', 'endingTime', 'priority']
+        fields = ['task', 'instanceId', 'day', 'startingTime', 'endingAvailableTime', 'priority']
