@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Error{% endblock %}
+{% block body %}
+	<div class="container">
+		<div class="panel panel-danger hasShadow">
+			<div class="panel-heading">
+				<h1>Oups! An error occured...</h1>
+			</div>
+			<div class="panel-body">
+				<p><strong>{{ errorMessage }}</strong></p>
+				<a href="">
+					<button class="btn btn-default">Try again</button>
+				</a>
+			</div>
+		</div>
+	</div>
+{% endblock %}
