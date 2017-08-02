@@ -8,6 +8,7 @@
 	<th>Day</th>
 	<th>Starting Time</th>
 	<th>Ending Time</th>
+	<th>Ending Available Time</th>
 	<th>Priority</th>
 {% endblock %}
 {% block tBody %}
@@ -18,6 +19,7 @@
 			<td style="vertical-align: middle;">{{ availability.day }}</td>
 			<td style="vertical-align: middle;">{{ availability.startingTime }}</td>
 			<td style="vertical-align: middle;">{{ availability.endingTime }}</td>
+			<td style="vertical-align: middle;">{{ availability.endingAvailableTime }}</td>
 			<td style="vertical-align: middle;">{{ availability.priority }}</td>
 			<td style="vertical-align: middle;">
 				<a href="{% url 'taskmanager:availabilityDelete' availability.pk %}">
