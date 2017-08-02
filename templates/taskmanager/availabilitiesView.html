@@ -1,21 +1,29 @@
-{% extends 'base.html' %}
+{% extends 'listView.html' %}
 {% block title %}Availabilities{% endblock %}
-{% block availabilityView %}active{% endblock %}
-{% block body %}
-    <h2>Availabilities</h2>
-    <ul>
-        {% for availability in availability_list %}
-            <li><a href="{% url 'taskmanager:availabilityDetails' availability.id %}">{{ availability.task.name }}
-                - {{ availability.day }} - {{ availability.startingTime }}</a></li>
-        {% endfor %}
-    </ul>
-    <div class="form-group">
-        <div class="col-lg-4">
-            <a href="{% url 'taskmanager:availability-add' %}">
-                <button class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> Add a new
-                    Availability
-                </button>
-            </a>
-        </div>
-    </div>
+{% block availabilitiesView %}active{% endblock %}
+{% block addButtonHref %}{% url 'taskmanager:availabilityAdd' %}{% endblock %}
+{% block fieldNames %}
+	<th>Task</th>
+	<th>Instance ID</th>
+	<th>Day</th>
+	<th>Starting Time</th>
+	<th>Ending Time</th>
+	<th>Priority</th>
+{% endblock %}
+{% block tBody %}
+	{% for availability in availability_list %}
+		<tr>
+			<td style="vertical-align: middle;">{{ availability.task.name }}</td>
+			<td style="vertical-align: middle;">{{ availability.instanceId }}</td>
+			<td style="vertical-align: middle;">{{ availability.day }}</td>
+			<td style="vertical-align: middle;">{{ availability.startingTime }}</td>
+			<td style="vertical-align: middle;">{{ availability.endingTime }}</td>
+			<td style="vertical-align: middle;">{{ availability.priority }}</td>
+			<td style="vertical-align: middle;">
+				<a href="{% url 'taskmanager:availabilityDelete' availability.pk %}">
+					<button class="btn btn-sm btn-danger">Delete</button>
+				</a>
+			</td>
+		</tr>
+	{% endfor %}
 {% endblock %}

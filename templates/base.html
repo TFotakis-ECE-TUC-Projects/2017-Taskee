@@ -1,23 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}Taskee{% endblock %}</title>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>{% block title %}{% endblock %} - Taskee</title>
 
-    {% load static %}
-    <link rel="icon" href="{% static 'images/favicon.ico' %}"/>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}"/>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/animate.min.css' %}"/>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
-    <script type="text/javascript" src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+	{% load static %}
+	<link rel="icon" href="{% static 'images/favicon.ico' %}"/>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}"/>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/animate.min.css' %}"/>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
+	<script type="text/javascript" src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
 </head>
 {#<body class="animated fadeIn">#}
 <body>
-{% include 'navbar.html' %}
-{% block body %}
-{% endblock %}
+<nav class="navbar navbar-inverse hasShadow">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="{% url 'taskmanager:index' %}">Taskee</a>
+		</div>
+		{% if user.is_authenticated %}
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#topNavBar">
+				<span class="glyphicon glyphicon-menu-hamburger" style="color: white"></span>
+			</button>
+			{#        Items#}
+			<div class="collapse navbar-collapse" id="topNavBar">
+				<ul class="nav navbar-nav">
+					<li class="{% block weeklyScheduleView %}{% endblock %}">
+						<a href="{% url 'taskmanager:weeklyScheduleView' %}">
+							<span class="glyphicon glyphicon-book"></span>&nbsp;Weekly
+							Schedules
+						</a>
+					</li>
+					<li class="{% block taskView %}{% endblock %}">
+						<a href="{% url 'taskmanager:taskView' %}">
+							<span class="glyphicon glyphicon-check"></span>&nbsp;Tasks
+						</a>
+					</li>
+					<li class="{% block availabilitiesView %}{% endblock %}">
+						<a href="{% url 'taskmanager:availabilityView' %}">
+							<span class="glyphicon glyphicon-calendar"></span>&nbsp;Availabilities
+						</a>
+					</li>
+					<li class="{% block taskTypeView %}{% endblock %}">
+						<a href="{% url 'taskmanager:taskTypeView' %}">
+							<span class="glyphicon glyphicon-tasks"></span>&nbsp;Task Types
+						</a>
+					</li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<a href="{% url 'login:logout' %}">
+							<span class="glyphicon glyphicon-log-out"></span>&nbsp;Logout
+						</a>
+					</li>
+				</ul>
+			</div>
+		{% endif %}
+	</div>
+</nav>
+{% block body %}{% endblock %}
 </body>
 </html>

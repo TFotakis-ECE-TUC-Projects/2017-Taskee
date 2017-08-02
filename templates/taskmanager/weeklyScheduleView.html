@@ -1,30 +1,29 @@
-{% extends 'base.html' %}
-{% block title %}Weekly Schedule {% endblock %}
+{% extends 'listView.html' %}
+{% block title %}Weekly Schedule{% endblock %}
 {% block weeklyScheduleView %}active{% endblock %}
-{% block body %}
-    <h2>Weekly Schedule</h2>
-    <ul>
-        {% for weeklySchedule in weeklySchedule_list %}
-            <li><a href="{% url 'taskmanager:weeklyScheduleDetails' weeklySchedule.id %}">{{ weeklySchedule.task.name }}
-                - {{ weeklySchedule.day }} - {{ weeklySchedule.startingTime }}</a></li>
-        {% endfor %}
-    </ul>
-    <div class="form-group">
-        <div class="col-lg-4">
-            <a href="{% url 'taskmanager:weeklySchedule-add' %}">
-                <button class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> Add a new
-                    Weekly Schedule
-                </button>
-            </a>
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-lg-4">
-            <a href="{% url 'taskmanager:showdetails' %}">
-                <button class="btn btn-default"><span class="glyphicon glyphicon-modal-window"></span> Show Details
-                </button>
-            </a>
-        </div>
-    </div>
-
+{% block addButtonHref %}{% url 'taskmanager:weeklyScheduleAdd' %}{% endblock %}
+{% block fieldNames %}
+	<th>Task</th>
+	<th>Instance ID</th>
+	<th>Day</th>
+	<th>Starting Time</th>
+	<th>Duration</th>
+	<th>Movable</th>
+{% endblock %}
+{% block tBody %}
+	{% for weeklySchedule in weeklySchedule_list %}
+		<tr>
+			<td style="vertical-align: middle;">{{ weeklySchedule.task.name }}</td>
+			<td style="vertical-align: middle;">{{ weeklySchedule.instanceId }}</td>
+			<td style="vertical-align: middle;">{{ weeklySchedule.day }}</td>
+			<td style="vertical-align: middle;">{{ weeklySchedule.startingTime }}</td>
+			<td style="vertical-align: middle;">{{ weeklySchedule.duration }}</td>
+			<td style="vertical-align: middle;">{{ weeklySchedule.canMove }}</td>
+			<td style="vertical-align: middle;">
+				<a href="{% url 'taskmanager:weeklyScheduleDelete' weeklySchedule.pk %}">
+					<button class="btn btn-sm btn-danger">Delete</button>
+				</a>
+			</td>
+		</tr>
+	{% endfor %}
 {% endblock %}

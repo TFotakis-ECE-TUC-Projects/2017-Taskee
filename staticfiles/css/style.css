@@ -1,21 +1,49 @@
-body{
-    background: white url("images/gbackground.png");
+body {
+    background: linear-gradient(to top, #303F9F 0%, #6972c1 100%);
+    /*background: white;*/
+    min-height: 100vh;
 }
-.navbar{
+
+.navbar {
     border-radius: 0;
 }
-/*.form-control{*/
-    /*border-radius: 0;*/
-    /*background-color: transparent;*/
-    /*!*border-width: 0;*!*/
-    /*color: white;*/
-    /*border-top-width: 0;*/
-    /*border-left-width: 0;*/
-    /*border-right-width: 0;*/
-/*}*/
-/*.btn{*/
-    /*border-radius: 0;*/
-    /*background-color: transparent;*/
-    /*color: white;*/
-    /*border: 0;*/
-/*}*/
+
+.hasShadow {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, .4);
+}
+
+.dark-primary-color {
+    background: #303F9F;
+}
+
+.default-primary-color {
+    background: #3F51B5;
+}
+
+.light-primary-color {
+    background: #C5CAE9;
+}
+
+.text-primary-color {
+    color: #FFFFFF;
+}
+
+.accent-color {
+    background: #448AFF;
+}
+
+.accent-color-icons {
+    color: #448AFF;
+}
+
+.primary-text-color {
+    color: #212121;
+}
+
+.secondary-text-color {
+    color: #757575;
+}
+
+.divider-color {
+    border-color: #BDBDBD;
+}

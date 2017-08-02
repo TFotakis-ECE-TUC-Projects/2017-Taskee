@@ -1,40 +1,44 @@
 {% extends 'base.html' %}
 {% block title %}Task Types{% endblock %}
+{% block taskTypeView %}active{% endblock %}
 {% block body %}
-    {% if errorMessage %}
-        <div class="row">
-            <div class="col-lg-8 col-offset-2 center-block">
-                <p><strong class="text-danger">{{ errorMessage }}</strong></p>
-            </div>
-        </div>
-    {% endif %}
-    <form action="{% url 'taskmanager:taskTypeUpdate' %}" method="post">
-        {% csrf_token %}
-        <div class="form-group col-lg-2 col-lg-offset-5">
-            <div class="row">
-                <div class="col-lg-6 text-right">
-                    <h3 class="text-center">Task Types</h3>
-                </div>
-                <div class="col-lg-6">
-                    <h3 class="text-center">Task Type Weights</h3>
-                </div>
-            </div>
-            {% for task in taskList %}
-                <div class="row">
-                    <div class="col-lg-6 text-right">
-                        <label for="{{ task.pk }}">{{ task.taskType }}</label>
-                        </div>
-                        <div class="col-lg-6">
-                            <input type="number" id="{{ task.pk }}" name="{{ task.pk }}" value="{{ task.weight }}">
-                        </div>
-                    </div>
-            {% endfor %}
-            <br>
-            <div class="row">
-                <div class="col-lg-6 col-lg-offset-3">
-                    <button class="btn btn-block btn-success">Save</button>
-                </div>
-            </div>
-        </div>
-    </form>
+	<div class="container">
+		<div class="col-lg-4 col-lg-offset-4">
+			<div class="panel panel-default hasShadow">
+				<div class="panel-heading">
+					<h1>Task Types Organization</h1>
+				</div>
+				<div class="panel-body">
+					{% if errorMessage %}
+						<div class="row">
+							<div class="col-lg-8 col-offset-2 center-block">
+								<p><strong class="text-danger">{{ errorMessage }}</strong></p>
+							</div>
+						</div>
+					{% endif %}
+					<form action="{% url 'taskmanager:taskTypeUpdate' %}" method="post">
+						{% csrf_token %}
+						<div class="form-group">
+							{% for task in taskList %}
+								<div class="input-group">
+									<label class="input-group-addon" style="min-width: 15ch"
+									       for="{{ task.pk }}">{{ task.taskType }}</label>
+									<input type="number" class="form-control" id="{{ task.pk }}"
+									       name="{{ task.pk }}"
+									       value="{{ task.weight }}">
+								</div>
+								<br>
+							{% endfor %}
+							<br>
+							<div class="row">
+								<div class="col-lg-6 col-lg-offset-3">
+									<button class="btn btn-block btn-success">Save</button>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}

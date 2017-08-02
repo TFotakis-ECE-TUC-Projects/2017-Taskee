@@ -1,19 +1,25 @@
-{% extends 'base.html' %}
+{% extends 'listView.html' %}
 {% block title %}Tasks{% endblock %}
-{% block body %}
-    <h2>Tasks</h2>
-    <ul>
-        {% for task in task_list %}
-            <li><a href="{% url 'taskmanager:taskDetail' task.id %}">{{ task.name }}</a></li>
-        {% endfor %}
-    </ul>
-    <div class="form-group">
-        <div class="col-lg-4">
-            <a href="{% url 'taskmanager:task-add' %}">
-                <button class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> Add a new
-                    Task
-                </button>
-            </a>
-        </div>
-    </div>
+{% block taskView %}active{% endblock %}
+{% block addButtonHref %}{% url 'taskmanager:taskAdd' %}{% endblock %}
+{% block fieldNames %}
+	<th>Name</th>
+	<th>Type</th>
+	<th>Place</th>
+	<th>Notes</th>
+{% endblock %}
+{% block tBody %}
+	{% for task in task_list %}
+		<tr>
+			<td style="vertical-align: middle;">{{ task.name }}</td>
+			<td style="vertical-align: middle;">{{ task.type }}}</td>
+			<td style="vertical-align: middle;">{{ task.place }}
+			<td style="vertical-align: middle;">{{ task.notes }}</td>
+			<td style="vertical-align: middle;">
+				<a href="{% url 'taskmanager:taskDelete' task.pk %}">
+					<button class="btn btn-sm btn-danger">Delete</button>
+				</a>
+			</td>
+		</tr>
+	{% endfor %}
 {% endblock %}

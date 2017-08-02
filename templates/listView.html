@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block body %}
+	<div class="container">
+		<div class="row">
+			<div class="panel panel-default hasShadow">
+				<div class="panel-heading">
+					<div class="row" style="display: flex; align-items: center">
+						<div class="col-lg-4">
+							<h2>{% block title %}{% endblock %}</h2>
+						</div>
+						<div class="col-lg-2 col-lg-offset-6 align-right">
+							<a href="{% block addButtonHref %}{% endblock %}">
+								<button class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> New
+								</button>
+							</a>
+						</div>
+					</div>
+				</div>
+				<div class="panel-body">
+					<table class="table">
+						<thead>
+						<tr>
+							{% block fieldNames %}{% endblock %}
+						</tr>
+						</thead>
+						<tbody>
+						{% block tBody %}{% endblock %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
