@@ -87,38 +87,7 @@ class CreateWeeklySchedule(LoginRequiredMixin, CreateView):
             for ws in ws_list:  # tha kanei redirect eite sto view me air message success eite .delete(self,elpizontas)
                 # if not critical.canMove:  # Todo na to doume me to availability
                 # Conflict check # Todo comment cleanup
-                # if ws.endingTime < ws.startingTime:  # exoume transicion hmeras (Monday -> Tuesday)
-                #     ws_end_day = Day.objects.get(id=ws.day_id + 1)
-                #     transicion2 = True
-                # else:
-                #     transicion2 = False
-                #     ws_end_day = ws.day
-                # sameDay = ws.day == critical_day
-                # almost_sameDay1 = critical_end_day == ws.day
-                # almost_sameDay2 = ws_end_day == critical_day
-                #
-                # check_days = sameDay | almost_sameDay1 | almost_sameDay2
-                #
-                # if transicion1 & transicion2:
-                #     if critical.canMove == True:
-                #         critical.save()
-                #         return redirect('taskmanager:weeklyScheduleView')
-                #     else:
-                #         return render(request=request, template_name='taskmanager/weeklyschedule_form.html',
-                #                       context={'errorMessage': 'The schedule you are trying to create conflicts with: ' + str(ws)})
-                # if transicion1 & (
-                # not ((critical_startime >= ws.endingTime) & (critical_endingtime <= ws.startingTime))):
-                #     secondHalfTaken = (critical_startime < ws.endingTime) | (
-                #         critical_endingtime > ws.startingTime)  # & (critical_endingtime <= ws.startingTime)
-                # else:
-                #     secondHalfTaken = (critical_startime <= ws.startingTime) & (critical_endingtime > ws.startingTime) & (critical_endingtime <= ws.startingTime)  # ([)]
-                #
-                # if transicion2 & (not ((critical_startime >= ws.endingTime) & (critical_endingtime <= ws.startingTime))):
-                #     firstHalfTaken = (critical_startime < ws.endingTime) | (critical_endingtime > ws.startingTime)  # & (ws.endingTime <= critical_endingtime)
-                # else:
-                #     firstHalfTaken = (ws.startingTime <= critical_startime) & (critical_startime < ws.endingTime) & (ws.endingTime <= critical_endingtime)  # [(])
-                #
-                # if check_days & (secondHalfTaken | firstHalfTaken):  # wholeTaken |  | partlyTaken
+                # original codeat calculator
                 if hasConflict(critical, ws):
                     if critical.canMove:
                         critical.save()
