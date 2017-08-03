@@ -122,6 +122,7 @@ class CreateAvailability(LoginRequiredMixin, CreateView):
 			availability.startingTime = form.cleaned_data['startingTime']
 			availability.endingAvailableTime = form.cleaned_data['endingAvailableTime']
 			availability.priority = form.cleaned_data['priority']
+			availability.totalWeight = availability.priority * availability.task.type.weight
 			availability.save()
 			return redirect('taskmanager:availabilityView')
 		return redirect('taskmanager:availabilityAdd')
@@ -152,15 +153,21 @@ def taskTypeView(request):
 
 
 def taskTypeWeightUpdate(request):
-	tasks = TaskTypeWeight.objects.filter(user=request.user)
-	for task in tasks:
+	taskTypeWeightList = TaskTypeWeight.objects.filter(user=request.user)
+	for taskTypeWeight in taskTypeWeightList:
 		try:
-			weight = request.POST[str(task.id)]
+			weight = request.POST[str(taskTypeWeight.id)]
 		except:
 			return render(request, 'errorView.html',
 			              {"errorMessage": "An error occured. Please try again"})
 		else:
-			tmpTask = TaskTypeWeight.objects.filter(pk=task.id).get()
-			tmpTask.weight = weight
+			tmpTask = TaskTypeWeight.objects.filter(pk=taskTypeWeight.id).get()
+			tmpTask.weight = int(weight)
 			tmpTask.save()
+			taskList = Task.objects.filter(user=request.user, type=taskTypeWeight.id)
+			for task in taskList:
+				availabilityList = Availability.objects.filter(user=request.user, task=task)
+				for availability in availabilityList:
+					availability.totalWeight = availability.priority * tmpTask.weight
+					availability.save()
 	return redirect('taskmanager:taskTypeView')

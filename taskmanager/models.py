@@ -73,6 +73,7 @@ class Availability(models.Model):
 	endingAvailableTime = models.TimeField()
 	priority = models.IntegerField(default=1)
 	used = models.BooleanField(default=False)
+	totalWeight = models.IntegerField(default=1)
 
 	def __str__(self): return self.task.name + ' - ' + self.day.name
 
@@ -82,7 +83,3 @@ class Availability(models.Model):
 	@property
 	def endingTime(self):
 		return (datetime.combine(date.today(), self.startingTime) + WeeklySchedule.objects.filter(user=self.user, task=self.task, instanceId=self.instanceId).get().duration).time()
-
-	@property
-	def totalWeight(self):
-		return self.priority * self.task.type.weight
