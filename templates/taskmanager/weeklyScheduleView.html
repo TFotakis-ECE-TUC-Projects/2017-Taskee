@@ -13,12 +13,27 @@
 {% block tBody %}
 	{% for weeklySchedule in weeklySchedule_list %}
 		<tr>
-			<td style="vertical-align: middle;">{{ weeklySchedule.task.name }}</td>
-			<td style="vertical-align: middle;">{{ weeklySchedule.instanceId }}</td>
-			<td style="vertical-align: middle;">{{ weeklySchedule.day }}</td>
-			<td style="vertical-align: middle;">{{ weeklySchedule.startingTime }}</td>
-			<td style="vertical-align: middle;">{{ weeklySchedule.duration }}</td>
-			<td style="vertical-align: middle;">{{ weeklySchedule.canMove }}</td>
+			{% if weeklySchedule.valid %}
+				<td class="{% if weeklySchedule.valid %}text-success{% endif %}" style="vertical-align: middle;">
+					<strong>{{ weeklySchedule.task.name }}</strong></td>
+				<td class="{% if weeklySchedule.valid %}text-success{% endif %}" style="vertical-align: middle;">
+					<strong>{{ weeklySchedule.instanceId }}</strong></td>
+				<td class="{% if weeklySchedule.valid %}text-success{% endif %}" style="vertical-align: middle;">
+					<strong>{{ weeklySchedule.day }}</strong></td>
+				<td class="{% if weeklySchedule.valid %}text-success{% endif %}" style="vertical-align: middle;">
+					<strong>{{ weeklySchedule.startingTime }}</strong></td>
+				<td class="{% if weeklySchedule.valid %}text-success{% endif %}" style="vertical-align: middle;">
+					<strong>{{ weeklySchedule.duration }}</strong></td>
+				<td class="{% if weeklySchedule.valid %}text-success{% endif %}" style="vertical-align: middle;">
+					<strong>{{ weeklySchedule.canMove }}</strong></td>
+			{% else %}
+				<td style="vertical-align: middle;">{{ weeklySchedule.task.name }}</td>
+				<td style="vertical-align: middle;">{{ weeklySchedule.instanceId }}</td>
+				<td style="vertical-align: middle;">{{ weeklySchedule.day }}</td>
+				<td style="vertical-align: middle;">{{ weeklySchedule.startingTime }}</td>
+				<td style="vertical-align: middle;">{{ weeklySchedule.duration }}</td>
+				<td style="vertical-align: middle;">{{ weeklySchedule.canMove }}</td>
+			{% endif %}
 			<td style="vertical-align: middle;">
 				<a href="{% url 'taskmanager:weeklyScheduleDelete' weeklySchedule.pk %}">
 					<button class="btn btn-sm btn-danger">Delete</button>

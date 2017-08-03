@@ -155,9 +155,14 @@ def preferable_day(task, user):  ### priority check
 #
 # if check_days & (secondHalfTaken | firstHalfTaken):  # wholeTaken |  | partlyTaken
 
-
+# TODO: implement conflict checks
 def arrangeTasks(user):
 	availabilityList = Availability.objects.filter(user=user).order_by('-totalWeight')
-	for availability in availabilityList:
-		print(availability)
+	while availabilityList:
+		availability = availabilityList.first()
+		weeklySchedule = WeeklySchedule.objects.filter(user=user, task_id=availability.task, instanceId=availability.instanceId).first()
+		weeklySchedule.startingTime = availability.startingTime
+		weeklySchedule.valid = True
+		weeklySchedule.save()
+		availabilityList = availabilityList.exclude(task_id=availability.task, instanceId=availability.instanceId)
 	return True
