@@ -72,10 +72,17 @@ class CreateWeeklySchedule(LoginRequiredMixin, CreateView):
 			critical.duration = form.cleaned_data['duration']
 			critical.canMove = form.cleaned_data['canMove']
 			critical.valid = not critical.canMove
-			ws_list = WeeklySchedule.objects.filter(user=request.user)
+			ws_list = WeeklySchedule.objects.filter(user=request.user, valid=True)
 			for ws in ws_list:  # tha kanei redirect eite sto view me air message success eite .delete(self,elpizontas)
 				if hasConflict(critical, ws):
 					if critical.canMove:
+						if ws.canMove:
+							if critical.task.type.weight > ws.task.type.weight:
+								ws.valid = False
+								ws.save()
+								critical.valid = True
+								critical.save()
+								return redirect('taskmanager:weeklyScheduleView')
 						critical.save()
 						return redirect('taskmanager:weeklyScheduleView')
 					else:
