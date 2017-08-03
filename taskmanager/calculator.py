@@ -157,4 +157,7 @@ def preferable_day(task, user):  ### priority check
 
 
 def arrangeTasks(user):
-	print('arrange tasks')
+	availabilityList = Availability.objects.filter(user=user).order_by('-totalWeight')
+	for availability in availabilityList:
+		print(availability)
+	return True

@@ -174,5 +174,7 @@ def taskTypeWeightUpdate(request):
 
 
 def calculate(request):
-	arrangeTasks(request.user)
-	return render(request=request, template_name='taskmanager/index.html')
+	if arrangeTasks(request.user):
+		return render(request=request, template_name='taskmanager/index.html', context={'message': 'Successfully Calculated', 'textClass': 'text-success'})
+	else:
+		return render(request=request, template_name='taskmanager/index.html', context={'message': 'Something went wrong... Please try again', 'textClass': 'text-danger'})
