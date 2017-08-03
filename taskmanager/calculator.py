@@ -85,6 +85,8 @@ def BGT_t1_t2(task1, task2, user):  ### DEn theloume to instanceId
 
 def preferable_day(task, user):  ### priority check
 	pass
+
+
 # av_list = Availability.objects.filter(task=task, user=user, instanceId=instanceId).get()
 # maximum=-1000000
 # for av1 in av_list:
@@ -152,3 +154,7 @@ def preferable_day(task, user):  ### priority check
 #     firstHalfTaken = (ws.startingTime <= critical_startime) & (critical_startime < ws.endingTime) & (ws.endingTime <= critical_endingtime)  # [(])
 #
 # if check_days & (secondHalfTaken | firstHalfTaken):  # wholeTaken |  | partlyTaken
+
+
+def arrangeTasks(user):
+	print('arrange tasks')

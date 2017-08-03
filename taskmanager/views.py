@@ -4,7 +4,7 @@ from django.shortcuts import redirect, render
 from django.views import generic
 from django.views.generic.edit import CreateView, DeleteView
 
-from .calculator import hasConflict
+from .calculator import hasConflict, arrangeTasks
 from .forms import TaskForm, WeeklyScheduleForm, AvailabilityForm
 from .models import Task, WeeklySchedule, TaskTypeWeight, Availability
 
@@ -171,3 +171,8 @@ def taskTypeWeightUpdate(request):
 					availability.totalWeight = availability.priority * tmpTask.weight
 					availability.save()
 	return redirect('taskmanager:taskTypeView')
+
+
+def calculate(request):
+	arrangeTasks(request.user)
+	return render(request=request, template_name='taskmanager/index.html')

@@ -17,4 +17,5 @@ urlpatterns = [
 	url(r'^availabilities/(?P<pk>[0-9]+)/delete$', views.DeleteAvailabilities.as_view(), name='availabilityDelete'),
 	url(r'^taskType/$', views.taskTypeView, name='taskTypeView'),
 	url(r'^taskType/update$', views.taskTypeWeightUpdate, name='taskTypeUpdate'),
+	url(r'^calculate', views.calculate, name='calculate'),
 ]
