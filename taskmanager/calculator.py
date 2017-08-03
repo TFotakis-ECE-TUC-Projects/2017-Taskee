@@ -33,22 +33,32 @@ def hasConflict(critical, ws):
 
 ######################## Gia WEEKLYSCEDULE
 
-def priority_reschedule(self, user, null=None):
+# def priority_reschedule(self, user, null=None):
+# 	ws_list = WeeklySchedule.objects.all()
+# 	for ws1 in ws_list:
+# 		if ws1.canMove:
+# 			for ws2 in ws_list:
+# 				if ws1.id != ws2.id & ws2.canMove & hasConflict(ws1, ws2):
+# 					if BGT_t1_t2(ws1.task, ws2.task, ws1.user):
+# 						ws1.valid = True
+# 						ws2.valid = False
+# 						return null  # Todo  Attentioin please....passengers without tickets  must cum to the counter, thank you ...
+# 					else:
+# 						ws1.valid = False
+# 						ws2.valid = True
+# 						return null
+# 					return null
+# 	return null
+
+def update_ws_total_weight(av):  ## called on insert in availabilities
 	ws_list = WeeklySchedule.objects.all()
-	for ws1 in ws_list:
-		if ws1.canMove:
-			for ws2 in ws_list:
-				if ws1.id != ws2.id & ws2.canMove & hasConflict(ws1, ws2):
-					if BGT_t1_t2(ws1.task, ws2.task, ws1.user):
-						ws1.valid = True
-						ws2.valid = False
-						return null  # Todo  Attentioin please....passengers without tickets  must cum to the counter, thank you ...
-					else:
-						ws1.valid = False
-						ws2.valid = True
-						return null
-					return null
-	return null
+	for ws in ws_list:
+		if av.task == ws.task:
+			ws.totalWeight = av.totalWeight           # έστω ότι το totalWeight του av είναι παντα ενημερωμενο και ενημερώνεται μονο του
+
+
+
+
 
 
 def reposition(self, user):
@@ -58,23 +68,40 @@ def reposition(self, user):
 			av_list = Availability.objects.filter(task=ws.task, user=ws.user)
 			broken = False
 			for av in av_list:
-				for ws2 in ws_list:
-					if ws2.task != av.task:
-						if hasConflict(av, ws):
-							if BGT_t1_t2(av.task, ws2.task, av.user):  # find_max_Weight(av.task, av.user) > find_max_Weight(ws2.task, ws2.user):
+				if is_max_priority(av, user):
+					av.used=True
+					for ws2 in ws_list:
+						if ws2.task != av.task:
+							if hasConflict(av, ws):
+								if BGT_t1_t2(av.task, ws2.task, av.user):  # find_max_Weight(av.task, av.user) > find_max_Weight(ws2.task, ws2.user):
+									broken = True
+									ws2.valid = False
+									# create weeklyschedule
+									break
+
+							else:
 								broken = True
 								ws2.valid = False
 								# create weeklyschedule
 								break
+					if broken:
+						break
+					# return error
 
-						else:
-							broken = True
-							ws2.valid = False
-							# create weeklyschedule
-							break
-				if broken:
-					break
-				# return error
+
+
+
+
+
+
+def is_max_priority(av, user , task):
+	#aoutch = Availability.objects.filter(user= user, used = False).aggregate(Max('priority'))
+	return av.id == Availability.objects.filter(user=user, task= task, priority=Availability.objects.all().aggregate(Max('priority'))['priority__max']).get().id
+
+
+def is_max_weight(av, user):
+	a = Availability.objects.filter(user= user, used = False).aggregate(Max('totalWeight'))
+
 
 
 def BGT_t1_t2(task1, task2, user):  ### DEn theloume to instanceId

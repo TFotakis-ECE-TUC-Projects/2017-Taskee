@@ -54,6 +54,7 @@ class WeeklySchedule(models.Model):
 	canMove = models.BooleanField(default=False)
 	valid = models.BooleanField(default=False)
 
+
 	def __str__(self): return self.task.name + ' - ' + self.day.name + ' ' + str(self.startingTime)
 
 	def get_absolute_url(self):
