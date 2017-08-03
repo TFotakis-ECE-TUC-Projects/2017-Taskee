@@ -34,70 +34,57 @@ def hasConflict(critical, ws):
 ######################## Gia WEEKLYSCEDULE
 
 def priority_reschedule(self, user, null=None):
-        ws_list = WeeklySchedule.objects.all()
-        for ws1 in ws_list:
-            if ws1.canMove:
-                for ws2 in ws_list:
-                    if ws1.id != ws2.id & ws2.canMove & hasConflict(ws1, ws2):
-                        if BGT_t1_t2(ws1.task,ws2.task,ws1.user):
-                            ws1.valid = True
-                            ws2.valid = False
-                            return null             #Todo  Attentioin please....passengers without tickets  must cum to the counter, thank you ...
-                        else:
-                            ws1.valid = False
-                            ws2.valid = True
-                            return null
-                        return null
-        return null
-
+	ws_list = WeeklySchedule.objects.all()
+	for ws1 in ws_list:
+		if ws1.canMove:
+			for ws2 in ws_list:
+				if ws1.id != ws2.id & ws2.canMove & hasConflict(ws1, ws2):
+					if BGT_t1_t2(ws1.task, ws2.task, ws1.user):
+						ws1.valid = True
+						ws2.valid = False
+						return null  # Todo  Attentioin please....passengers without tickets  must cum to the counter, thank you ...
+					else:
+						ws1.valid = False
+						ws2.valid = True
+						return null
+					return null
+	return null
 
 
 def reposition(self, user):
-        ws_list=WeeklySchedule.objects.filter(canMove=True, user=user).get()
-        for ws in ws_list:
-            if not ws.valid:
-                av_list = Availability.objects.filter(task=ws.task, user= ws.user)
-                broken=False
-                for av in av_list:
-                    for ws2 in ws_list:
-                        if ws2.task != av.task:
-                            if hasConflict(av,ws):
-                                if BGT_t1_t2(av.task, ws2.task, av.user):    #find_max_Weight(av.task, av.user) > find_max_Weight(ws2.task, ws2.user):
-                                        broken = True
-                                        ws2.valid=False
-                                        #create weeklyschedule
-                                        break
+	ws_list = WeeklySchedule.objects.filter(canMove=True, user=user).get()
+	for ws in ws_list:
+		if not ws.valid:
+			av_list = Availability.objects.filter(task=ws.task, user=ws.user)
+			broken = False
+			for av in av_list:
+				for ws2 in ws_list:
+					if ws2.task != av.task:
+						if hasConflict(av, ws):
+							if BGT_t1_t2(av.task, ws2.task, av.user):  # find_max_Weight(av.task, av.user) > find_max_Weight(ws2.task, ws2.user):
+								broken = True
+								ws2.valid = False
+								# create weeklyschedule
+								break
 
-                            else:
-                                broken = True
-                                ws2.valid=False
-                                # create weeklyschedule
-                                break
-                    if broken:
-                        break
-                    # return error
-
-
+						else:
+							broken = True
+							ws2.valid = False
+							# create weeklyschedule
+							break
+				if broken:
+					break
+				# return error
 
 
-
-
-
-
-
-
-def BGT_t1_t2(task1, task2, user): ### DEn theloume to instanceId
-	t1=TaskTypeWeight.objects.filter(taskType=task1, user=user).aggregate(Max('weight'))
+def BGT_t1_t2(task1, task2, user):  ### DEn theloume to instanceId
+	t1 = TaskTypeWeight.objects.filter(taskType=task1, user=user).aggregate(Max('weight'))
 	t2 = TaskTypeWeight.objects.filter(taskType=task2, user=user).aggregate(Max('weight'))
 	return t1 > t2
 
 
-def preferable_day(task, user): ### priority check
-
-
-
-
-
+def preferable_day(task, user):  ### priority check
+	pass
 # av_list = Availability.objects.filter(task=task, user=user, instanceId=instanceId).get()
 # maximum=-1000000
 # for av1 in av_list:

@@ -34,7 +34,7 @@ class Day(models.Model):
 class Task(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
 	name = models.CharField(max_length=250)
-	type = models.ForeignKey(TaskType, on_delete=models.CASCADE, default=1)
+	type = models.ForeignKey(TaskTypeWeight, on_delete=models.CASCADE, default=1)
 	place = models.CharField(max_length=250)
 	notes = models.CharField(max_length=1000)
 
@@ -72,6 +72,7 @@ class Availability(models.Model):
 	startingTime = models.TimeField()
 	endingAvailableTime = models.TimeField()
 	priority = models.IntegerField(default=1)
+	used = models.BooleanField(default=False)
 
 	def __str__(self): return self.task.name + ' - ' + self.day.name
 
@@ -81,3 +82,7 @@ class Availability(models.Model):
 	@property
 	def endingTime(self):
 		return (datetime.combine(date.today(), self.startingTime) + WeeklySchedule.objects.filter(user=self.user, task=self.task, instanceId=self.instanceId).get().duration).time()
+
+	@property
+	def totalWeight(self):
+		return self.priority * self.task.type.weight
