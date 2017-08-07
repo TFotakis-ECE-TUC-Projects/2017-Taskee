@@ -3,7 +3,7 @@ from django.db.models import Max
 from taskmanager.models import Day, Availability, WeeklySchedule, TaskTypeWeight
 
 
-def hasConflict(critical, ws):
+def hasConflict(critical, ws):      #Todo problem idies wres diaforetikes meres
 	criticalIsTransitive = critical.endingTime < critical.startingTime
 	critical_end_day = Day.objects.get(id=(ws.day.id - (not criticalIsTransitive) % 7) + 1)
 	wsIsTransitive = ws.endingTime < ws.startingTime
@@ -54,7 +54,8 @@ def update_ws_total_weight(av):  ## called on insert in availabilities
 	ws_list = WeeklySchedule.objects.all()
 	for ws in ws_list:
 		if av.task == ws.task:
-			ws.totalWeight = av.totalWeight           # έστω ότι το totalWeight του av είναι παντα ενημερωμενο και ενημερώνεται μονο του
+			temp=Availability.objects.filter(user=av.user, task=av.task, instanceId=av.instanceId).aggregate(Max('totalWeight'))
+			ws.totalWeight = temp        # έστω ότι το totalWeight του av είναι παντα ενημερωμενο και ενημερώνεται μονο του
 
 
 
@@ -62,27 +63,37 @@ def update_ws_total_weight(av):  ## called on insert in availabilities
 
 
 def reposition(self, user):
-	ws_list = WeeklySchedule.objects.filter(canMove=True, user=user).get()
+	ws_list = WeeklySchedule.objects.filter(canMove=True, user=user).order_by('-totalWeight')
 	for ws in ws_list:
 		if not ws.valid:
-			av_list = Availability.objects.filter(task=ws.task, user=ws.user)
+			av_list = Availability.objects.filter(task=ws.task, user=ws.user).order_by('-priority')
 			broken = False
 			for av in av_list:
-				if is_max_priority(av, user):
-					av.used=True
+				# if is_max_priority(av, user):
+				# 	av.used=True
 					for ws2 in ws_list:
 						if ws2.task != av.task:
-							if hasConflict(av, ws):
-								if BGT_t1_t2(av.task, ws2.task, av.user):  # find_max_Weight(av.task, av.user) > find_max_Weight(ws2.task, ws2.user):
+							if hasConflict(av, ws2):
+								if av.totalWeight > ws2.totalWeight: #BGT_t1_t2(av.task, ws2.task, av.user):  # find_max_Weight(av.task, av.user) > find_max_Weight(ws2.task, ws2.user):
+									# ^ maybe we want total weight instead of weight
 									broken = True
 									ws2.valid = False
-									# create weeklyschedule
+									# update weeklyschedule
+									#ws._do_update(startingTime=av.startingTime, day=av.day, valid= True)
+									ws.startingTime=av.startingTime
+									ws.day =av.day
+									ws.valid= True
+									ws.save()
 									break
-
 							else:
 								broken = True
-								ws2.valid = False
-								# create weeklyschedule
+								#ws2.valid = False
+								# update weeklyschedule
+								# ws._up
+								ws.startingTime = av.startingTime
+								ws.day = av.day
+								ws.valid = True
+								ws.save()
 								break
 					if broken:
 						break
@@ -93,9 +104,7 @@ def reposition(self, user):
 
 
 
-
 def is_max_priority(av, user , task):
-	#aoutch = Availability.objects.filter(user= user, used = False).aggregate(Max('priority'))
 	return av.id == Availability.objects.filter(user=user, task= task, priority=Availability.objects.all().aggregate(Max('priority'))['priority__max']).get().id
 
 
@@ -188,8 +197,16 @@ def arrangeTasks(user):
 	while availabilityList:
 		availability = availabilityList.first()
 		weeklySchedule = WeeklySchedule.objects.filter(user=user, task_id=availability.task, instanceId=availability.instanceId).first()
+
 		weeklySchedule.startingTime = availability.startingTime
-		weeklySchedule.valid = True
-		weeklySchedule.save()
+		ws_list = WeeklySchedule.objects.filter(user=user, valid=True)
+		flag=False
+		for ws in ws_list:
+			if hasConflict(weeklySchedule,ws):
+				flag=True
+				break
+		if not flag:
+			weeklySchedule.valid = True
+			weeklySchedule.save()
 		availabilityList = availabilityList.exclude(task_id=availability.task, instanceId=availability.instanceId)
 	return True

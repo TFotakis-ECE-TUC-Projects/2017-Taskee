@@ -53,7 +53,7 @@ class WeeklySchedule(models.Model):
 	duration = models.DurationField()
 	canMove = models.BooleanField(default=False)
 	valid = models.BooleanField(default=False)
-
+	totalWeight = models.IntegerField(default=1)
 
 	def __str__(self): return self.task.name + ' - ' + self.day.name + ' ' + str(self.startingTime)
 

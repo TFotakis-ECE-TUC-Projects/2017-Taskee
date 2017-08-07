@@ -4,9 +4,10 @@ from django.shortcuts import redirect, render
 from django.views import generic
 from django.views.generic.edit import CreateView, DeleteView
 
-from .calculator import hasConflict, arrangeTasks
+from .calculator import hasConflict, arrangeTasks,update_ws_total_weight
 from .forms import TaskForm, WeeklyScheduleForm, AvailabilityForm
 from .models import Task, WeeklySchedule, TaskTypeWeight, Availability
+
 
 LOGIN_URL = '/login/'
 
@@ -131,6 +132,7 @@ class CreateAvailability(LoginRequiredMixin, CreateView):
 			availability.priority = form.cleaned_data['priority']
 			availability.totalWeight = availability.priority * availability.task.type.weight
 			availability.save()
+			update_ws_total_weight(availability)
 			return redirect('taskmanager:availabilityView')
 		return redirect('taskmanager:availabilityAdd')
 
