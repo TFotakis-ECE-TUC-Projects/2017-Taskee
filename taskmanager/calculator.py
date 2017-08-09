@@ -5,7 +5,7 @@ from taskmanager.models import Day, Availability, WeeklySchedule, TaskTypeWeight
 
 def hasConflict(critical, ws):      #Todo problem idies wres diaforetikes meres
 	criticalIsTransitive = critical.endingTime < critical.startingTime
-	critical_end_day = Day.objects.get(id=(ws.day.id - (not criticalIsTransitive) % 7) + 1)
+	critical_end_day = Day.objects.get(id=(critical.day.id - (not criticalIsTransitive) % 7) + 1)
 	wsIsTransitive = ws.endingTime < ws.startingTime
 	ws_end_day = Day.objects.get(id=(ws.day.id - (not wsIsTransitive) % 7) + 1)
 
@@ -54,9 +54,9 @@ def update_ws_total_weight(av):  ## called on insert in availabilities
 	ws_list = WeeklySchedule.objects.all()
 	for ws in ws_list:
 		if av.task == ws.task:
-			temp=Availability.objects.filter(user=av.user, task=av.task, instanceId=av.instanceId).aggregate(Max('totalWeight'))
-			ws.totalWeight = temp        # έστω ότι το totalWeight του av είναι παντα ενημερωμενο και ενημερώνεται μονο του
-
+			temp = Availability.objects.filter(user=av.user, task=av.task, instanceId=av.instanceId).aggregate(Max('totalWeight'))
+			ws.totalWeight = temp.get("totalWeight__max")      # έστω ότι το totalWeight του av είναι παντα ενημερωμενο και ενημερώνεται μονο του
+			ws.save()
 
 
 
@@ -208,5 +208,5 @@ def arrangeTasks(user):
 		if not flag:
 			weeklySchedule.valid = True
 			weeklySchedule.save()
-		availabilityList = availabilityList.exclude(task_id=availability.task, instanceId=availability.instanceId)
+		availabilityList = availabilityList.exclude(task_id=availability.task, instanceId=availability.instanceId) # Todo Big Problema αδειάζει ολη την λίστα
 	return True
