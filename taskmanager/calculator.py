@@ -208,5 +208,5 @@ def arrangeTasks(user):
 		if not flag:
 			weeklySchedule.valid = True
 			weeklySchedule.save()
-		availabilityList = availabilityList.exclude(task_id=availability.task, instanceId=availability.instanceId) # Todo Big Problema αδειάζει ολη την λίστα
+		availabilityList = availabilityList.exclude(id=availability.id, task_id=availability.task, instanceId=availability.instanceId) # dont need task_id and instanceId
 	return True
