@@ -208,5 +208,6 @@ def arrangeTasks(user):
 		if not flag:
 			weeklySchedule.valid = True
 			weeklySchedule.save()
-		availabilityList = availabilityList.exclude(id=availability.id, task_id=availability.task, instanceId=availability.instanceId) # dont need task_id and instanceId
+			availabilityList = availabilityList.exclude(task_id=availability.task, instanceId=availability.instanceId)
+		availabilityList = availabilityList.exclude(id=availability.id) # dont need task_id and instanceId
 	return True
