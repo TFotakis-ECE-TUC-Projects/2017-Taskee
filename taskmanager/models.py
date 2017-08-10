@@ -22,7 +22,7 @@ class TaskTypeWeight(models.Model):
 	def get_absolute_url(self):
 		return reverse('taskmanager:taskTypeView')  # , kwargs={'pk': self.pk})
 
-	def __str__(self): return self.taskType.name
+	def __str__(self): return self.taskType.name +" - "+str(self.user)
 
 
 class Day(models.Model):

@@ -25,7 +25,6 @@ class CreateTask(LoginRequiredMixin, CreateView):
 
 	def post(self, request, **kwargs):
 		form = self.form_class(data=request.POST)
-
 		if form.is_valid():
 			task = form.save(commit=False)
 			task.user = request.user
