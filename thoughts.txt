@@ -44,13 +44,13 @@ availabilityTable
 task.id|instanceCounter|day|availableStartingTime|availableEndingTime|priority
 
 types:
-1) ipnos
-2) diaskedasi
-3) diavasma
-4) gimnastiki
-5) ergasia
-6) mageirema
-7) ma8ima
-8) douleia
-9) ka8arisma
-10)rantevou
+1) Sleep
+2) Entertainment
+3) Studying
+4) Exercise
+5) Project
+6) Cooking
+7) Course
+8) Work
+9) Cleaning
+10)Appointment

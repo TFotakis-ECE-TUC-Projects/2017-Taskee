@@ -1,13 +1,13 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import redirect, render
 from django.views import generic
 from django.views.generic.edit import CreateView, DeleteView
 
-from .calculator import hasConflict, arrangeTasks,update_ws_total_weight
+from .calculator import hasConflict, arrangeTasks, update_ws_total_weight
 from .forms import TaskForm, WeeklyScheduleForm, AvailabilityForm
 from .models import Task, WeeklySchedule, TaskTypeWeight, Availability
-
 
 LOGIN_URL = '/login/'
 
@@ -17,7 +17,7 @@ class IndexView(LoginRequiredMixin, generic.TemplateView):
 	login_url = LOGIN_URL
 
 
-######## Task ########
+# Task
 class CreateTask(LoginRequiredMixin, CreateView):
 	model = Task
 	form_class = TaskForm
@@ -43,18 +43,17 @@ class TaskView(LoginRequiredMixin, generic.ListView):
 	login_url = LOGIN_URL
 
 	def get_queryset(self):
-		# return Task.objects.all()
 		return Task.objects.filter(user=self.request.user)
 
 
 class DeleteTask(LoginRequiredMixin, DeleteView):
 	model = Task
-	success_url = reverse_lazy('taskmanager:taskView')  # This is where this view will redirect the user
+	success_url = reverse_lazy('taskmanager:taskView')
 	template_name = 'delete_confirm.html'
 	login_url = LOGIN_URL
 
 
-######### WeeklySchedule ###########
+# WeeklySchedule
 class CreateWeeklySchedule(LoginRequiredMixin, CreateView):
 	model = WeeklySchedule
 	form_class = WeeklyScheduleForm
@@ -73,7 +72,7 @@ class CreateWeeklySchedule(LoginRequiredMixin, CreateView):
 			critical.canMove = form.cleaned_data['canMove']
 			critical.valid = not critical.canMove
 			ws_list = WeeklySchedule.objects.filter(user=request.user, valid=True)
-			for ws in ws_list:  # tha kanei redirect eite sto view me air message success eite .delete(self,elpizontas)
+			for ws in ws_list:
 				if hasConflict(critical, ws):
 					if critical.canMove:
 						if ws.canMove:
@@ -86,13 +85,11 @@ class CreateWeeklySchedule(LoginRequiredMixin, CreateView):
 						critical.save()
 						return redirect('taskmanager:weeklyScheduleView')
 					else:
-						return render(request=request, template_name='errorView.html',
-						              context={'errorMessage': 'The schedule you are trying to create conflicts with: ' + str(ws)})
+						return render(request=request, template_name='errorView.html', context={'errorMessage': 'The schedule you are trying to create conflicts with: ' + str(ws)})
 			critical.valid = True
 			critical.save()
 			return redirect('taskmanager:weeklyScheduleView')  # Todo na baloume success message
-		return render(request=request, template_name='errorView.html',
-		              context={'errorMessage': 'The form is not valid'})
+		return render(request=request, template_name='errorView.html', context={'errorMessage': 'The form is not valid'})
 
 
 class WeeklyScheduleView(LoginRequiredMixin, generic.ListView):
@@ -112,7 +109,7 @@ class DeleteWeeklySchedule(LoginRequiredMixin, DeleteView):
 	login_url = LOGIN_URL
 
 
-########## Availability ###################
+# Availability
 class CreateAvailability(LoginRequiredMixin, CreateView):
 	model = Availability
 	form_class = AvailabilityForm
@@ -153,21 +150,22 @@ class DeleteAvailabilities(LoginRequiredMixin, DeleteView):
 	login_url = LOGIN_URL
 
 
-######### Tasktype ########
+# Tasktype
+@login_required(login_url=LOGIN_URL)
 def taskTypeView(request):
 	tasks = TaskTypeWeight.objects.filter(user=request.user).order_by('-weight')
 	template_name = 'taskmanager/taskTypeView.html'
 	return render(request=request, template_name=template_name, context={'taskList': tasks})
 
 
+@login_required(login_url=LOGIN_URL)
 def taskTypeWeightUpdate(request):
 	taskTypeWeightList = TaskTypeWeight.objects.filter(user=request.user)
 	for taskTypeWeight in taskTypeWeightList:
 		try:
 			weight = request.POST[str(taskTypeWeight.id)]
 		except:
-			return render(request, 'errorView.html',
-			              {"errorMessage": "An error occured. Please try again"})
+			return render(request, 'errorView.html', {"errorMessage": "An error occurred. Please try again"})
 		else:
 			tmpTask = TaskTypeWeight.objects.filter(pk=taskTypeWeight.id).get()
 			tmpTask.weight = int(weight)
@@ -181,6 +179,7 @@ def taskTypeWeightUpdate(request):
 	return redirect('taskmanager:taskTypeView')
 
 
+@login_required(login_url=LOGIN_URL)
 def calculate(request):
 	if arrangeTasks(request.user):
 		return render(request=request, template_name='taskmanager/index.html', context={'message': 'Successfully Calculated', 'textClass': 'text-success'})

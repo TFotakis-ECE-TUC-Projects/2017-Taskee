@@ -10,7 +10,7 @@
 				{% if message %}
 					<p class="{{ textClass }}">{{ message }}</p>
 				{% endif %}
-				<a href="calculate">
+				<a href="{% url 'taskmanager:calculate' %}">
 					<button class="center-block btn btn-success btn-lg">Calculate!</button>
 				</a>
 			</div>

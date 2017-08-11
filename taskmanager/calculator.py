@@ -1,6 +1,6 @@
 from django.db.models import Max
 
-from taskmanager.models import Day, Availability, WeeklySchedule, TaskTypeWeight
+from taskmanager.models import Day, Availability, WeeklySchedule
 
 
 def hasConflict(critical, ws):
@@ -31,15 +31,13 @@ def hasConflict(critical, ws):
 		return secondHalfTaken | firstHalfTaken
 
 
-
-def update_ws_total_weight(av):  ## called on insert in availabilities
+def update_ws_total_weight(av):
 	ws_list = WeeklySchedule.objects.all()
 	for ws in ws_list:
 		if av.task == ws.task:
 			temp = Availability.objects.filter(user=av.user, task=av.task, instanceId=av.instanceId).aggregate(Max('totalWeight'))
 			ws.totalWeight = temp.get("totalWeight__max")
 			ws.save()
-
 
 
 def arrangeTasks(user):
@@ -50,10 +48,10 @@ def arrangeTasks(user):
 
 		weeklySchedule.startingTime = availability.startingTime
 		ws_list = WeeklySchedule.objects.filter(user=user, valid=True)
-		flag=False
+		flag = False
 		for ws in ws_list:
-			if hasConflict(weeklySchedule,ws):
-				flag=True
+			if hasConflict(weeklySchedule, ws):
+				flag = True
 				break
 		if not flag:
 			weeklySchedule.valid = True
